@@ -14,6 +14,7 @@
       ../../profiles/home-manager/zsh
       ../../profiles/home-manager/git
       ../../profiles/home-manager/git/paul.nix
+      ../../profiles/home-manager/gpg
     ];
   };
 }
