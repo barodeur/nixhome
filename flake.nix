@@ -23,6 +23,12 @@
       inherit inputs;
       modules = [ home-manager.darwinModules.home-manager ./hosts/jamie ];
     };
+
+    darwinConfigurations.lois = darwin.lib.darwinSystem {
+      system = "x86_64-darwin";
+      inherit inputs;
+      modules = [ home-manager.darwinModules.home-manager ./hosts/lois];
+    };
   };
 }
 
