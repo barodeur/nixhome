@@ -10,5 +10,6 @@ with pkgs; [
   mosh
   pinentry-curses
   yubikey-personalization
+  tmux
 ]
 
