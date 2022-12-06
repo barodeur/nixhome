@@ -14,10 +14,6 @@
       };
 
       extraConfig = {
-        core = {
-          editor = "nvim";
-        };
-
         color = {
           ui = true;
         };
