@@ -11,10 +11,11 @@
   home-manager.users.paul = { ... }: {
     imports = [
       ../../profiles/home-manager/direnv
-      ../../profiles/home-manager/zsh
       ../../profiles/home-manager/git
       ../../profiles/home-manager/git/paul.nix
       ../../profiles/home-manager/gpg
+      ../../profiles/home-manager/vim
+      ../../profiles/home-manager/zsh
     ];
   };
 }
