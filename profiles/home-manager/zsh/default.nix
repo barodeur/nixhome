@@ -4,7 +4,7 @@
       enable = true;
 
       autocd = true;
-      defaultKeymap = "emacs";
+      defaultKeymap = "viins";
 
       history = {
         extended = true;
