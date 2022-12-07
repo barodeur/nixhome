@@ -15,6 +15,18 @@
         gst = "git st";
       };
 
+      initExtra = ''
+        source ~/.p10k.zsh
+      '';
+
+      zplug = {
+        enable = true;
+        plugins = [
+          { name = "zsh-users/zsh-autosuggestions"; }
+          { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
+        ];
+      };
+
       history = {
         extended = true;
         save = 10000;
