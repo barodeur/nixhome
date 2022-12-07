@@ -8,8 +8,8 @@ with pkgs; [
   jq
   kustomize
   mosh
-  pinentry-curses
-  yubikey-personalization
+  pinentry_mac
   tmux
+  yubikey-personalization
 ]
 
