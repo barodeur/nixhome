@@ -5,6 +5,7 @@
 
       autocd = true;
       defaultKeymap = "viins";
+      enableSyntaxHighlighting = true;
 
       history = {
         extended = true;
