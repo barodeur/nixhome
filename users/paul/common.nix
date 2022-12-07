@@ -11,6 +11,7 @@
   home-manager.users.paul = { ... }: {
     imports = [
       ../../profiles/home-manager/direnv
+      ../../profiles/home-manager/environment
       ../../profiles/home-manager/git
       ../../profiles/home-manager/git/paul.nix
       ../../profiles/home-manager/gpg
