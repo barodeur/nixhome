@@ -7,6 +7,14 @@
       defaultKeymap = "viins";
       enableSyntaxHighlighting = true;
 
+      shellAliases = {
+        l = "ls -l";
+        ll = "ls -la";
+
+        gl = "git log";
+        gst = "git st";
+      };
+
       history = {
         extended = true;
         save = 10000;
