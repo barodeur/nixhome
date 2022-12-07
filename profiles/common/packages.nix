@@ -5,6 +5,7 @@ with pkgs; [
   git
   git-lfs
   gnupg
+  iterm2
   jq
   kustomize
   mosh
