@@ -14,13 +14,17 @@ in
         actionlint
         bat
         fd
+        fenix.rust-analyzer
         nodePackages.eslint_d
         nodePackages.prettier
+        nodePackages.typescript
+        nodePackages.typescript-language-server
+        nodePackages.yaml-language-server
         ripgrep
+        rnix-lsp
         shellcheck
         statix
         tree-sitter
-        rnix-lsp
       ];
 
       extraConfig = ''
@@ -28,6 +32,7 @@ in
       '';
 
       plugins = with pkgs.vimPlugins; [
+        bufferline-nvim
         cmp-buffer
         cmp-calc
         cmp-cmdline

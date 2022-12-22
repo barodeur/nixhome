@@ -11,7 +11,6 @@ lsp_status.config {
   diagnostics = false, -- Disable diagnostic since it's already handled by lualine
 }
 
-
 -- Advertise snippets support
 local capabilities = require'cmp_nvim_lsp'.default_capabilities()
 capabilities.window = capabilities.window or {}
@@ -47,7 +46,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua require"trouble".previous({skip_groups = true, jump = true})<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua require"trouble".next({skip_groups = true, jump = true})<CR>', opts)
-  buf_set_keymap('n', '<leader>q', '<cmd>Trouble loclist', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>Trouble loclist<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
   if client.server_capabilities.documentFormattingProvider then
@@ -265,4 +264,12 @@ nvim_lsp.yamlls.setup {
     },
   },
 }
+
+nvim_lsp.ocamllsp.setup({
+    cmd = { "ocamllsp" },
+    filetypes = { "ocaml", "ocaml.menhir", "ocaml.interface", "ocaml.ocamllex", "reason", "dune" },
+    root_dir = nvim_lsp.util.root_pattern("*.opam", "esy.json", "package.json", ".git", "dune-project", "dune-workspace"),
+    on_attach = on_attach,
+    capabilities = capabilities
+})
 

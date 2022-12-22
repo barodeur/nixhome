@@ -10,6 +10,7 @@ vim.keymap.set('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>')
 require'crates'.setup()
 require'trouble'.setup()
 require'gitsigns'.setup()
+require'bufferline'.setup()
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
@@ -39,3 +40,4 @@ require'nvim-tree'.setup {
 require'lualine-config'
 require'lsp'
 require'telescope-config'
+require'completion'
