@@ -15,6 +15,7 @@ with pkgs; [
   mosh
   pinentry_mac
   pkg-config
+  ripgrep
   terraform
   terraform-ls
   tmux
