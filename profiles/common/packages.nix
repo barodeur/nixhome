@@ -20,6 +20,7 @@ with pkgs; [
   terraform-ls
   tmux
   utm
+  yubikey-manager
   yubikey-personalization
 
   # ocaml
