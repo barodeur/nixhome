@@ -11,6 +11,7 @@ with pkgs; [
   iterm2
   jq
   kubectl
+  lima
   mosh
   pinentry_mac
   pkg-config
