@@ -13,6 +13,8 @@ with pkgs; [
   mosh
   pinentry_mac
   pkg-config
+  terraform
+  terraform-ls
   tmux
   yubikey-personalization
 
