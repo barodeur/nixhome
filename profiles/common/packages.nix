@@ -6,6 +6,7 @@ with pkgs; [
   git
   git-lfs
   gnupg
+  hcloud
   htop
   iterm2
   jq
