@@ -10,6 +10,7 @@ with pkgs; [
   htop
   iterm2
   jq
+  kubectl
   mosh
   pinentry_mac
   pkg-config
