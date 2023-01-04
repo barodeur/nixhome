@@ -19,6 +19,7 @@ with pkgs; [
   terraform
   terraform-ls
   tmux
+  utm
   yubikey-personalization
 
   # ocaml
