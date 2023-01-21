@@ -22,6 +22,7 @@ with pkgs; [
   utm
   yubikey-manager
   yubikey-personalization
+  packer
 
   # ocaml
   opam
