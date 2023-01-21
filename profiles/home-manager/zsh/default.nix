@@ -19,6 +19,7 @@
         source ~/.p10k.zsh
         export GPG_TTY=$(tty)
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        export HELM_PLUGINS=$HOME/.helm/plugins
       '';
 
       zplug = {
