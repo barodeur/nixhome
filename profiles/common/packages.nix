@@ -23,6 +23,7 @@ with pkgs; [
   yubikey-manager
   yubikey-personalization
   packer
+  youtube-dl
 
   # ocaml
   opam
