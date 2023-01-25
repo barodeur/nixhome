@@ -30,7 +30,12 @@ with pkgs; [
   # k8s
   helmfile
   k9s
-  kubernetes-helm-wrapped
+  (pkgs.wrapHelm pkgs.kubernetes-helm {
+    plugins = [
+      pkgs.kubernetes-helmPlugins.helm-secrets
+      pkgs.kubernetes-helmPlugins.helm-git
+    ];
+  })
   kustomize
 
   (fenix.combine [
