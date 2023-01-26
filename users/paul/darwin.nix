@@ -1,9 +1,11 @@
 { pkgs, config, lib, ... }:
 
+let username = "paul";
+in
 {
   imports = [ ./common.nix ];
 
-  users.users = { paul = { home = "/Users/paul"; }; };
+  users.users = { ${username} = { home = "/Users/${username}"; }; };
 
   system = {
     keyboard = {

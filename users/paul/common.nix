@@ -17,6 +17,7 @@
       ../../profiles/home-manager/gpg
       ../../profiles/home-manager/vim
       ../../profiles/home-manager/zsh
+      ../../profiles/home-manager/tmux
     ];
   };
 }
