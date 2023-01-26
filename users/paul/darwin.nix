@@ -10,6 +10,7 @@
       enableKeyMapping = true;
       remapCapsLockToEscape = true;
     };
+    defaults.finder.FXPreferredViewStyle = "clmv";
     defaults.trackpad.TrackpadThreeFingerDrag = true;
   };
 }
