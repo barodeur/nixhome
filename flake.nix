@@ -42,6 +42,12 @@
         inherit inputs;
         modules = [ home-manager.darwinModules.home-manager ./hosts/lois ];
       };
+
+      darwinConfigurations.piama = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        inherit inputs;
+        modules = [ home-manager.darwinModules.home-manager ./hosts/piama ];
+      };
     };
 }
 
