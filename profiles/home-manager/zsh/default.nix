@@ -20,6 +20,10 @@
         export GPG_TTY=$(tty)
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         bindkey '^r' history-incremental-search-backward
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        . /opt/homebrew/opt/asdf/libexec/asdf.sh
+        export BUN_INSTALL="$HOME/.bun"
+        export PATH="$BUN_INSTALL/bin:$PATH"
       '';
 
       zplug = {
