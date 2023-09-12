@@ -23,6 +23,9 @@
           defaultBranch = "main";
         };
 
+        format = {
+          pretty = "format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset";
+        };
       };
 
       ignores = [
