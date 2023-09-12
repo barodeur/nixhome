@@ -11,7 +11,7 @@
         l = "ls -l";
         ll = "ls -la";
 
-        gl = "git log";
+        gl = "git l";
         gst = "git st";
       };
 
