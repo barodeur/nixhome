@@ -27,7 +27,12 @@
 
         export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
         export PKG_CONFIG_PATH="/opt/homebrew/opt/libpq/lib/pkgconfig"
+
         export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+        export ANDROID_HOME=$HOME/Library/Android/sdk
+        export PATH=$PATH:$ANDROID_HOME/emulator
+        export PATH=$PATH:$ANDROID_HOME/platform-tools
+        export JAVA_HOME=/opt/homebrew/Cellar/openjdk/21/libexec/openjdk.jdk/Contents/Home
       '';
 
       zplug = {
