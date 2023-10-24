@@ -30,7 +30,6 @@ with pkgs; [
 
   # k8s
   helmfile
-  k9s
   (pkgs.wrapHelm pkgs.kubernetes-helm {
     plugins = [
       pkgs.kubernetes-helmPlugins.helm-secrets
