@@ -16,8 +16,6 @@ with pkgs; [
   pinentry_mac
   pkg-config
   ripgrep
-  terraform
-  terraform-ls
   tmux
   utm
   yubikey-manager
