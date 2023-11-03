@@ -22,6 +22,7 @@ with pkgs; [
   yubikey-personalization
   packer
   youtube-dl
+  nixpkgs-fmt
 
   # ocaml
   opam
