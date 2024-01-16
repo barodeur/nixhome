@@ -13,16 +13,16 @@ with pkgs; [
   kubectl
   lima
   mosh
+  nixpkgs-fmt
+  packer
   pinentry_mac
   pkg-config
   ripgrep
   tmux
   utm
+  youtube-dl
   yubikey-manager
   yubikey-personalization
-  packer
-  youtube-dl
-  nixpkgs-fmt
 
   # ocaml
   opam
