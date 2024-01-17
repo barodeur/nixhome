@@ -10,6 +10,10 @@
         key = "ABE00992A263A790";
         signByDefault = true;
       };
+
+      core = {
+        excludesFile = "~/.gitignore";
+      };
     };
   };
 }
