@@ -15,6 +15,10 @@
         core = {
           excludesFile = "~/.gitignore";
         };
+
+        pull = {
+          rebase = true;
+        };
       };
     };
   };
