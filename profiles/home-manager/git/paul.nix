@@ -11,8 +11,10 @@
         signByDefault = true;
       };
 
-      core = {
-        excludesFile = "~/.gitignore";
+      extraConfig = {
+        core = {
+          excludesFile = "~/.gitignore";
+        };
       };
     };
   };
