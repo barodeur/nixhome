@@ -28,13 +28,6 @@
         . /opt/homebrew/opt/asdf/libexec/asdf.sh
         export BUN_INSTALL="$HOME/.bun"
         export PATH="$BUN_INSTALL/bin:$PATH"
-
-        export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-        export ANDROID_HOME=$HOME/Library/Android/sdk
-        export PATH=$PATH:$ANDROID_HOME/emulator
-        export PATH=$PATH:$ANDROID_HOME/platform-tools
-        export JAVA_HOME=/opt/homebrew/Cellar/openjdk@11/11.0.20.1/libexec/openjdk.jdk/Contents/Home
-
         export PATH=$PATH:$HOME/bin
       '';
 
