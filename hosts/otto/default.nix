@@ -34,6 +34,17 @@
     bibata-cursors
     gh
     zed-editor
+
+    # Build dependencies for compiling language runtimes
+    gcc
+    gnumake
+    python3
+    pkg-config
+    openssl
+    zlib
+    readline
+    libyaml
+    perl
   ];
 
   programs.bash = {
