@@ -35,7 +35,7 @@ opt('o', 'diffopt', {
 opt('o', 'foldenable', true)   -- Enable folding
 opt('o', 'foldlevel', 100)     -- Open all folds by default
 opt('o', 'foldmethod', 'expr') -- Fold with tree-sitter
-opt('o', 'foldexpr', 'nvim_treesitter#foldexpr()')
+opt('o', 'foldexpr', 'v:lua.vim.treesitter.foldexpr()')
 opt('o', 'formatoptions',
   'c' .. -- Format comments
   'r' .. -- Continue comments by default

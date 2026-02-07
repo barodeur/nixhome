@@ -11,23 +11,14 @@ require'crates'.setup()
 require'trouble'.setup()
 require'gitsigns'.setup()
 require'bufferline'.setup()
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
-  indent = {
-    enable = false,
-  },
-}
+
+-- Treesitter highlight (grammars installed via nix)
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
+
 require'nvim-tree'.setup {
   diagnostics = {
     enable = true,

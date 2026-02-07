@@ -47,17 +47,14 @@ in
         gitsigns-nvim
         goyo-vim
         gruvbox-nvim
-        lsp-status-nvim
         lspkind-nvim
         lualine-nvim
-        null-ls-nvim
         nvim-cmp
         nvim-dap
         nvim-lspconfig
         nvim-tree-lua
         nvim-web-devicons
-        # rust-tools-nvim
-        symbols-outline-nvim
+        outline-nvim
         telescope-dap-nvim
         telescope-symbols-nvim
         trouble-nvim
@@ -65,7 +62,6 @@ in
         vim-easy-align
         vim-fugitive
         vim-jsonnet
-        vim-polyglot
         vim-rhubarb
         vim-surround
         vim-vsnip

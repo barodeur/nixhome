@@ -1,5 +1,5 @@
 local actions = require'telescope.actions'
-local trouble = require'trouble.providers.telescope'
+local open_with_trouble = require'trouble.sources.telescope'.open
 
 local telescope = require'telescope'
 local dressing = require'dressing'
@@ -13,8 +13,8 @@ telescope.setup {
       },
     },
     mappings = {
-      i = { ['<c-t>'] = trouble.open_with_trouble },
-      n = { ['<c-t>'] = trouble.open_with_trouble },
+      i = { ['<c-t>'] = open_with_trouble },
+      n = { ['<c-t>'] = open_with_trouble },
     },
   },
   pickers = {
@@ -34,4 +34,3 @@ dressing.setup {
     telescope = require'telescope.themes'.get_cursor(),
   },
 }
-
