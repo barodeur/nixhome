@@ -14,14 +14,14 @@ in
         actionlint
         bat
         fd
-        fenix.rust-analyzer
+        # fenix.rust-analyzer
         nodePackages.eslint_d
         nodePackages.prettier
         nodePackages.typescript
         nodePackages.typescript-language-server
         nodePackages.yaml-language-server
         ripgrep
-        rnix-lsp
+        # rnix-lsp
         shellcheck
         statix
         tree-sitter
@@ -56,7 +56,7 @@ in
         nvim-lspconfig
         nvim-tree-lua
         nvim-web-devicons
-        rust-tools-nvim
+        # rust-tools-nvim
         symbols-outline-nvim
         telescope-dap-nvim
         telescope-symbols-nvim

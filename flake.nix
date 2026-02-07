@@ -26,7 +26,6 @@
     , nixpkgs
     , darwin
     , flake-utils
-    , nix
     , fenix
     }@inputs: {
       overlay = final: prev: { my = self.packages.${final.system}; };
@@ -47,6 +46,14 @@
         system = "aarch64-darwin";
         inherit inputs;
         modules = [ home-manager.darwinModules.home-manager ./hosts/piama ];
+      };
+
+      homeConfigurations."paul@otto" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [ fenix.overlays.default ];
+        };
+        modules = [ ./hosts/otto ];
       };
     };
 }
