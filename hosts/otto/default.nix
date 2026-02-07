@@ -73,7 +73,7 @@
         go = "1.25";
       };
     };
-    settings = {
+    globalConfig.settings = {
       all_compile = false;
     };
   };
