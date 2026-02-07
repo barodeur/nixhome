@@ -63,6 +63,20 @@
     };
   };
 
+  programs.mise = {
+    enable = true;
+    globalConfig = {
+      tools = {
+        ruby = "4.0";
+        node = "24.13";
+        bun = "1.3";
+      };
+    };
+    settings = {
+      all_compile = false;
+    };
+  };
+
   programs.kitty.enable = true;
   programs.ghostty.enable = true;
   programs.firefox.enable = true;
