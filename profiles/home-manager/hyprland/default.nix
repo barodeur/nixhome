@@ -125,6 +125,7 @@
 
       exec-once = [
         "waybar"
+        "sleep 2 && hyprctl hyprpaper wallpaper \", /home/paul/Pictures/wallpaper.jpg\""
       ];
     };
     extraConfig = ''
@@ -193,8 +194,9 @@
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = [ "~/Pictures/wallpaper.png" ];
-      wallpaper = [ ",~/Pictures/wallpaper.png" ];
+      splash = false;
+      preload = [ "/home/paul/Pictures/wallpaper.jpg" ];
+      wallpaper = [ ", /home/paul/Pictures/wallpaper.jpg" ];
     };
   };
 
