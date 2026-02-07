@@ -5,19 +5,18 @@
     git = {
       enable = true;
 
-      aliases = {
-        st = "status";
-        amend = "commit --amend";
-        co = "checkout";
-        l = "log --graph --date=short";
-        c = "commit -m";
-      };
+      settings = {
+        alias = {
+          st = "status";
+          amend = "commit --amend";
+          co = "checkout";
+          l = "log --graph --date=short";
+          c = "commit -m";
+        };
 
-      extraConfig = {
         color = {
           ui = true;
         };
-
 
         init = {
           defaultBranch = "main";
