@@ -44,7 +44,7 @@
         "$mod, Return, exec, $terminal"
         "$mod, D, exec, $menu"
         "$mod, Q, killactive"
-        "$mod SHIFT, M, exit"
+        "$mod SHIFT, M, exec, printf '  Lock\\n󰗼  Logout\\n󰜉  Restart\\n󰐥  Shutdown\\n' | wofi --dmenu --prompt 'System' | bash -c 'read choice; case \"$choice\" in *Lock*) hyprlock;; *Logout*) hyprctl dispatch exit;; *Restart*) systemctl reboot;; *Shutdown*) systemctl poweroff;; esac'"
         "$mod, V, togglefloating"
         "$mod, F, fullscreen"
 
