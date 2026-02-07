@@ -31,6 +31,7 @@
     bluetui
     brightnessctl
     bibata-cursors
+    gh
   ];
 
   programs.bash = {
