@@ -23,7 +23,6 @@
   };
 
   home.packages = with pkgs; [
-    nodejs
     wget
     prismlauncher
     grim
