@@ -117,6 +117,12 @@
         "$mod, mouse:273, resizewindow"
       ];
 
+      windowrulev2 = [
+        "float, class:^(1password)$"
+        "center, class:^(1password)$"
+        "size 800 600, class:^(1password)$"
+      ];
+
       exec-once = [
         "waybar"
       ];
