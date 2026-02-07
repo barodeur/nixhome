@@ -32,6 +32,7 @@
     brightnessctl
     bibata-cursors
     gh
+    zed-editor
   ];
 
   programs.bash = {
