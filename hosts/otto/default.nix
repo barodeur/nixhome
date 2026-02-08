@@ -34,6 +34,14 @@
     bibata-cursors
     gh
     zed-editor
+    libnotify
+    jq
+    opentofu
+    sops
+
+    # Virtualization
+    qemu
+    virt-manager
 
     # Build dependencies for compiling language runtimes
     gcc
