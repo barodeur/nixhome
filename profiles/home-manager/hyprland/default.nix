@@ -201,5 +201,20 @@
     };
   };
 
+  services.mako = {
+    enable = true;
+    settings = {
+      default-timeout = 5000;
+      border-radius = 10;
+      border-size = 2;
+      border-color = "#33ccffee";
+      background-color = "#1a1b26ee";
+      text-color = "#c0caf5";
+      "app-name=\"Claude Code\"" = {
+        default-timeout = 0;
+      };
+    };
+  };
+
   programs.wofi.enable = true;
 }
