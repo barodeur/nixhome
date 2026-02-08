@@ -37,6 +37,8 @@
     zed-editor
     libnotify
     jq
+    btop
+    bottom
     opentofu
     sops
 
