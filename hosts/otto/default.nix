@@ -7,6 +7,7 @@
     ../../profiles/home-manager/gpg/linux.nix
     ../../profiles/home-manager/zsh/linux.nix
     ../../profiles/home-manager/vim
+    ../../profiles/home-manager/direnv
     ../../profiles/home-manager/environment
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
