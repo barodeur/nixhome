@@ -16,6 +16,10 @@
       };
 
       initExtra = ''
+        autoload -Uz edit-command-line
+        zle -N edit-command-line
+        bindkey -M vicmd 'vv' edit-command-line
+
         source ~/.p10k.zsh
         export GPG_TTY=$(tty)
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
