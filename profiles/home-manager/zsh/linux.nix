@@ -15,7 +15,15 @@
       zle -N edit-command-line
       bindkey -M vicmd 'vv' edit-command-line
     '';
-    shellAliases.hms = "home-manager switch --flake ~/projects/nixhome";
+    shellAliases = {
+      l = "ls -l";
+      ll = "ls -la";
+
+      gl = "git l";
+      gst = "git st";
+
+      hms = "home-manager switch --flake ~/projects/nixhome";
+    };
   };
 
   programs.starship.enable = true;
