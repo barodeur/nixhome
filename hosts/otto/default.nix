@@ -41,6 +41,9 @@
     bottom
     opentofu
     sops
+    signal-desktop
+    telegram-desktop
+    chromium
 
     # Virtualization
     qemu
@@ -57,6 +60,14 @@
     libyaml
     perl
   ];
+
+  xdg.desktopEntries.whatsapp = {
+    name = "WhatsApp";
+    exec = "${pkgs.chromium}/bin/chromium --app=https://web.whatsapp.com";
+    icon = "chromium";
+    comment = "WhatsApp Web";
+    categories = [ "Network" "InstantMessaging" ];
+  };
 
   programs.bash = {
     enable = true;
