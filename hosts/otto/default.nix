@@ -9,6 +9,7 @@
     ../../profiles/home-manager/vim
     ../../profiles/home-manager/direnv
     ../../profiles/home-manager/environment
+    ../../profiles/home-manager/tmux
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
   ];

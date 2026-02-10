@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.tmux = {
@@ -10,6 +10,15 @@
     historyLimit = 100000;
 
     tmuxinator.enable = true;
+
+    plugins = with pkgs.tmuxPlugins; [
+      sensible
+      yank
+      open
+      tokyo-night-tmux
+      resurrect
+      continuum
+    ];
 
     extraConfig = ''
       bind-key ^D detach-client
@@ -50,17 +59,10 @@
       unbind r
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
 
+      # wt group picker popup (prefix + Ctrl-a)
+      bind-key ^A display-popup -E "wt"
+
       set-option -g status-style bg=default
-
-      set -g @plugin 'tmux-plugins/tpm'
-      set -g @plugin 'tmux-plugins/tmux-sensible'
-      set -g @plugin 'tmux-plugins/tmux-resurrect'
-      set -g @plugin 'tmux-plugins/tmux-continuum'
-      set -g @plugin 'tmux-plugins/tmux-yank'
-      set -g @plugin 'tmux-plugins/tmux-open'
-      set -g @plugin 'janoamaral/tokyo-night-tmux'
-
-      run -b '~/.tmux/plugins/tpm/tpm'
     '';
   };
 }

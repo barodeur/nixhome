@@ -45,7 +45,7 @@
         "$mod, Return, exec, $terminal"
         "$mod, D, exec, $menu"
         "$mod, Q, killactive"
-        "$mod SHIFT, M, exec, printf '  Lock\\n󰒲  Sleep\\n󰋊  Hibernate\\n󰗼  Logout\\n󰜉  Restart\\n󰐥  Shutdown\\n' | wofi --dmenu --prompt 'System' | bash -c 'read choice; case \"$choice\" in *Lock*) hyprlock;; *Sleep*) systemctl suspend;; *Hibernate*) systemctl hibernate;; *Logout*) hyprctl dispatch exit;; *Restart*) systemctl reboot;; *Shutdown*) systemctl poweroff;; esac'"
+        "$mod SHIFT, M, exec, printf '  Lock\\n󰒲  Sleep\\n󰋊  Hibernate\\n󰗼  Logout\\n󰜉  Restart\\n󰐥  Shutdown\\n' | wofi --dmenu --insensitive --prompt 'System' | bash -c 'read choice; case \"$choice\" in *Lock*) hyprlock;; *Sleep*) systemctl suspend;; *Hibernate*) systemctl hibernate;; *Logout*) hyprctl dispatch exit;; *Restart*) systemctl reboot;; *Shutdown*) systemctl poweroff;; esac'"
         "$mod, V, togglefloating"
         "$mod, F, fullscreen"
 
