@@ -21,14 +21,18 @@
         bindkey -M vicmd 'vv' edit-command-line
 
         source ~/.p10k.zsh
+        eval "$(/opt/homebrew/bin/brew shellenv)"
         export GPG_TTY=$(tty)
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         bindkey '^r' history-incremental-search-backward
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-        . /opt/homebrew/opt/asdf/libexec/asdf.sh
         export BUN_INSTALL="$HOME/.bun"
         export PATH="$BUN_INSTALL/bin:$PATH"
         export PATH=$PATH:$HOME/bin
+        export GOPATH=$HOME/go
+        export PATH=$PATH:$GOPATH/bin
+        export PATH=$PATH:$HOME/.cargo/bin
+        export PATH=$PATH:$HOME/.local/bin
+        eval "$(mise activate zsh)"
       '';
 
       zplug = {

@@ -2,10 +2,8 @@
 
 with pkgs; [
   colima
-  curl
   git
   git-lfs
-  gnupg
   hcloud
   htop
   iterm2
@@ -15,7 +13,7 @@ with pkgs; [
   mosh
   nixpkgs-fmt
   packer
-  pinentry_mac
+  # pinentry_mac
   pkg-config
   ripgrep
   tmux
@@ -36,23 +34,4 @@ with pkgs; [
     ];
   })
   kustomize
-
-  (fenix.combine [
-    fenix.latest.rustfmt
-
-    fenix.stable.llvm-tools-preview
-    fenix.stable.clippy
-    fenix.stable.cargo
-    fenix.stable.rust-src
-    fenix.stable.rust-std
-    fenix.stable.rustc
-    fenix.targets.wasm32-unknown-unknown.stable.rust-std
-    fenix.targets.x86_64-unknown-linux-musl.stable.rust-std
-    fenix.targets.aarch64-unknown-linux-musl.stable.rust-std
-    fenix.targets.x86_64-unknown-linux-gnu.stable.rust-std
-    fenix.targets.aarch64-unknown-linux-gnu.stable.rust-std
-    fenix.targets.x86_64-apple-darwin.stable.rust-std
-    fenix.targets.aarch64-apple-darwin.stable.rust-std
-  ])
 ]
-

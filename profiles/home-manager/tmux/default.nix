@@ -21,6 +21,10 @@
     ];
 
     extraConfig = ''
+      # Bell settings for notifications
+      set-option -g bell-action any
+      set-option -g visual-bell off
+
       bind-key ^D detach-client
       set -g renumber-windows on
 
@@ -54,6 +58,8 @@
 
       # New windows/pane in $PWD
       bind c new-window -c "#{pane_current_path}"
+
+      set-option -g default-command "reattach-to-user-namespace zsh"
 
       # force a reload of the config file
       unbind r
