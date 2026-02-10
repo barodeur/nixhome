@@ -44,6 +44,7 @@
     signal-desktop
     telegram-desktop
     chromium
+    socat
 
     # Virtualization
     qemu
