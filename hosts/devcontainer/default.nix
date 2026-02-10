@@ -14,12 +14,16 @@
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
+    bat
     curl
-    jq
-    ripgrep
     fd
-    vim
+    fzf
+    gh
+    htop
+    jq
     mise
+    ripgrep
+    vim
   ];
 
   programs.home-manager.enable = true;
