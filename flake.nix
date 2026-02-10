@@ -55,6 +55,16 @@
         };
         modules = [ ./hosts/otto ];
       };
+
+      homeConfigurations."dev@x86_64-linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./hosts/devcontainer ];
+      };
+
+      homeConfigurations."dev@aarch64-linux" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        modules = [ ./hosts/devcontainer ];
+      };
     };
 }
 
