@@ -3,7 +3,7 @@ let
   inherit (inputs) self nixpkgs fenix;
 in
 {
-  services.nix-daemon.enable = true;
+  nix.enable = false;
 
   nixpkgs.overlays = [
     fenix.overlays.default
