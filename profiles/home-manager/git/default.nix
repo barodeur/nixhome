@@ -40,6 +40,7 @@
         ".mypy_cache"
         ".envrc"
         ".direnv/"
+        ".wt"
       ];
     };
   };

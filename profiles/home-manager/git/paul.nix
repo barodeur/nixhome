@@ -14,10 +14,6 @@
           name = "Paul Chobert";
         };
 
-        core = {
-          excludesFile = "~/.gitignore";
-        };
-
         pull = {
           rebase = true;
         };
