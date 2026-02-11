@@ -59,8 +59,6 @@
       # New windows/pane in $PWD
       bind c new-window -c "#{pane_current_path}"
 
-      set-option -g default-command "reattach-to-user-namespace zsh"
-
       # force a reload of the config file
       unbind r
       bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"

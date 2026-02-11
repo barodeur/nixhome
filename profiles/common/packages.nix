@@ -18,7 +18,7 @@ with pkgs; [
   ripgrep
   tmux
   utm
-  youtube-dl
+  yt-dlp
   yubikey-manager
   yubikey-personalization
 
