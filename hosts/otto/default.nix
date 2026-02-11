@@ -10,6 +10,7 @@
     ../../profiles/home-manager/direnv
     ../../profiles/home-manager/environment
     ../../profiles/home-manager/tmux
+    ../../profiles/home-manager/mise
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
   ];
@@ -84,21 +85,6 @@
     matchBlocks."github.com" = {
       hostname = "github.com";
       user = "git";
-    };
-  };
-
-  programs.mise = {
-    enable = true;
-    globalConfig = {
-      tools = {
-        ruby = "4.0";
-        node = "24.13";
-        bun = "1.3";
-        go = "1.25";
-      };
-    };
-    globalConfig.settings = {
-      all_compile = false;
     };
   };
 

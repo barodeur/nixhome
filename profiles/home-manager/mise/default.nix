@@ -12,7 +12,7 @@
       };
       settings = {
         all_compile = false;
-        "ruby.compile" = false;
+        ruby = { compile = false; };
       };
     };
   };

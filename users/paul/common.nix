@@ -18,6 +18,7 @@
       ../../profiles/home-manager/vim
       ../../profiles/home-manager/zsh
       ../../profiles/home-manager/tmux
+      ../../profiles/home-manager/mise
     ];
   };
 }
