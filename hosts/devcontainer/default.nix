@@ -9,8 +9,8 @@
     ../../profiles/home-manager/tmux
   ];
 
-  home.username = "dev";
-  home.homeDirectory = "/home/dev";
+  home.username = "paul";
+  home.homeDirectory = "/home/paul";
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
@@ -39,6 +39,8 @@
 
   home.sessionVariables = {
     SSH_AUTH_SOCK = "$HOME/.gnupg/S.gpg-agent.ssh";
+    LANG = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
   };
 
   home.sessionPath = [
@@ -49,8 +51,16 @@
     github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
   '';
 
+  programs.tmux.terminal = lib.mkForce "xterm-256color";
   programs.tmux.extraConfig = lib.mkAfter ''
     set-option -g default-command "zsh"
+    set -as terminal-overrides ',xterm*:Tc'
+    set -q -g status-utf8 on
+    setw -q -g utf8 on
+  '';
+
+  programs.zsh.initContent = lib.mkAfter ''
+    eval "$(mise activate zsh)"
   '';
 
   programs.zsh.history = {
