@@ -5,6 +5,8 @@
     enable = true;
     globalConfig = {
       tools = {
+        python = "3.14";
+        uv = "latest";
         ruby = "4.0";
         node = "24.13";
         bun = "1.3";
