@@ -41,6 +41,7 @@
         ".envrc"
         ".direnv/"
         ".wt"
+        ".claude/settings.local.json"
       ];
     };
   };
