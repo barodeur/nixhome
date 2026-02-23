@@ -6,7 +6,7 @@
     mouse = true;
     baseIndex = 1;
     keyMode = "vi";
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
     shortcut = "a";
     historyLimit = 100000;
 
@@ -68,6 +68,15 @@
       bind-key ^A display-popup -E "wt"
 
       set-option -g status-style bg=default
+
+      # Ghostty terminal features
+      set -ag terminal-features "xterm-ghostty:RGB"
+      set -ag terminal-features "xterm-ghostty:usstyle"
+      set -ag terminal-features "xterm-ghostty:cursor-style"
+      set -ag terminal-features "xterm-ghostty:sync"
+      set -g extended-keys on
+      set -ag terminal-features "xterm-ghostty:extkeys"
+      set -g set-clipboard on
     '';
   };
 }
