@@ -11,6 +11,7 @@
     ../../profiles/home-manager/environment
     ../../profiles/home-manager/tmux
     ../../profiles/home-manager/mise
+    ../../profiles/home-manager/vscode
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
   ];

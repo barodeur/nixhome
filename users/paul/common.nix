@@ -19,6 +19,7 @@
       ../../profiles/home-manager/zsh
       ../../profiles/home-manager/tmux
       ../../profiles/home-manager/mise
+      ../../profiles/home-manager/vscode
     ];
   };
 }
