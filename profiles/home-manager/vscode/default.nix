@@ -4,14 +4,14 @@
   programs.vscode = {
     enable = true;
 
-    extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       mkhl.direnv
       enkia.tokyo-night
       editorconfig.editorconfig
     ];
 
-    userSettings = {
+    profiles.default.userSettings = {
       "editor.fontFamily" = "'JetBrains Mono', 'monospace'";
       "editor.fontSize" = 14;
       "editor.fontLigatures" = true;

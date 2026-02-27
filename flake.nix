@@ -52,6 +52,7 @@
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           overlays = [ fenix.overlays.default ];
+          config.allowUnfree = true;
         };
         modules = [ ./hosts/otto ];
       };
