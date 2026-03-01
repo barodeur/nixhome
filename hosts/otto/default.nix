@@ -9,6 +9,7 @@
     ../../profiles/home-manager/vim
     ../../profiles/home-manager/direnv
     ../../profiles/home-manager/environment
+    ../../profiles/home-manager/kubernetes
     ../../profiles/home-manager/tmux
     ../../profiles/home-manager/mise
     ../../profiles/home-manager/vscode

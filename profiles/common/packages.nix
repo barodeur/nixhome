@@ -8,7 +8,6 @@ with pkgs; [
   htop
   iterm2
   jq
-  kubectl
   lima
   mosh
   nixpkgs-fmt
