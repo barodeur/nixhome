@@ -24,8 +24,8 @@
       };
 
       env = [
-        "XCURSOR_SIZE,36"
-        "HYPRCURSOR_SIZE,36"
+        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_SIZE,24"
         "XCURSOR_THEME,Bibata-Modern-Classic"
       ];
 
