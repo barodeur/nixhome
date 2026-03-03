@@ -67,6 +67,11 @@
       # wt group picker popup (prefix + Ctrl-a)
       bind-key ^A display-popup -E "wt"
 
+      # Strip direnv/nix-shell state inherited from the shell that started
+      # the tmux server, so new sessions/windows don't get stale env vars.
+      set-option -g update-environment "DIRENV_DIR DIRENV_FILE DIRENV_WATCHES DIRENV_DIFF IN_NIX_SHELL"
+      set-hook -g session-created "run-shell 'for v in DIRENV_DIR DIRENV_FILE DIRENV_WATCHES DIRENV_DIFF IN_NIX_SHELL; do tmux set-environment -gu \$v; done'"
+
       set-option -g status-style bg=default
 
       # Ghostty terminal features
