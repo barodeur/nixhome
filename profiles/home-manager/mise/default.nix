@@ -1,6 +1,10 @@
 { ... }:
 
 {
+  home.sessionPath = [
+    "$HOME/.local/share/mise/shims"
+  ];
+
   programs.mise = {
     enable = true;
     globalConfig = {

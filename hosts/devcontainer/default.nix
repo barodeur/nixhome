@@ -6,6 +6,7 @@
     ../../profiles/home-manager/git/paul.nix
     ../../profiles/home-manager/zsh/linux.nix
     ../../profiles/home-manager/direnv
+    ../../profiles/home-manager/mise
     ../../profiles/home-manager/tmux
   ];
 
@@ -21,7 +22,6 @@
     gh
     htop
     jq
-    mise
     ripgrep
     vim
   ];
@@ -42,10 +42,6 @@
     LANG = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
   };
-
-  home.sessionPath = [
-    "$HOME/.local/share/mise/shims"
-  ];
 
   home.file.".ssh/known_hosts".text = ''
     github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
