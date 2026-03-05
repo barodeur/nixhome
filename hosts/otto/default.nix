@@ -45,6 +45,7 @@
     bottom
     opentofu
     sops
+    age
     signal-desktop
     telegram-desktop
     chromium
