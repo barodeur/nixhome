@@ -72,6 +72,10 @@
       set-option -g update-environment "DIRENV_DIR DIRENV_FILE DIRENV_WATCHES DIRENV_DIFF IN_NIX_SHELL"
       set-hook -g session-created "run-shell 'for v in DIRENV_DIR DIRENV_FILE DIRENV_WATCHES DIRENV_DIFF IN_NIX_SHELL; do tmux set-environment -gu \$v; done'"
 
+      # Disable tokyo-night-tmux git widgets (they run git fetch / gh api calls)
+      set -g @tokyo-night-tmux_show_git 0
+      set -g @tokyo-night-tmux_show_wbg 0
+
       set-option -g status-style bg=default
 
       # Ghostty terminal features
