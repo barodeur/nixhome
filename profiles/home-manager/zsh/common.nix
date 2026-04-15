@@ -29,7 +29,6 @@
       export PATH=$PATH:$GOPATH/bin
       export PATH=$PATH:$HOME/.cargo/bin
       export PATH=$PATH:$HOME/.local/bin
-      eval "$(mise activate zsh)"
     '';
 
     history = {
