@@ -48,6 +48,12 @@
         modules = [ home-manager.darwinModules.home-manager ./hosts/piama ];
       };
 
+      darwinConfigurations.cmpc = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        inherit inputs;
+        modules = [ home-manager.darwinModules.home-manager ./hosts/cmpc ];
+      };
+
       homeConfigurations."paul@otto" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = "x86_64-linux";
