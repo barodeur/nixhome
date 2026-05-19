@@ -18,6 +18,8 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
   };
 
   outputs =
@@ -27,6 +29,7 @@
     , darwin
     , flake-utils
     , fenix
+    , nix-flatpak
     }@inputs: {
       overlay = final: prev: { my = self.packages.${final.system}; };
 
@@ -60,7 +63,10 @@
           overlays = [ fenix.overlays.default ];
           config.allowUnfree = true;
         };
-        modules = [ ./hosts/otto ];
+        modules = [
+          nix-flatpak.homeManagerModules.nix-flatpak
+          ./hosts/otto
+        ];
       };
 
       homeConfigurations."paul@x86_64-linux" = home-manager.lib.homeManagerConfiguration {

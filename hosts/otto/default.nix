@@ -46,7 +46,6 @@
     opentofu
     sops
     age
-    signal-desktop
     telegram-desktop
     chromium
     socat
@@ -90,6 +89,12 @@
       user = "git";
     };
   };
+
+  services.flatpak.enable = true;
+  services.flatpak.packages = [
+    "org.signal.Signal"
+    "org.scummvm.ScummVM"
+  ];
 
   programs.kitty.enable = true;
   programs.ghostty.enable = true;

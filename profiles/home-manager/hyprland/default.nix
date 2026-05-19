@@ -27,6 +27,7 @@
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
         "XCURSOR_THEME,Bibata-Modern-Classic"
+        "XDG_DATA_DIRS,$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
       ];
 
       input = {
