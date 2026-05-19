@@ -41,6 +41,8 @@
     zed-editor
     libnotify
     jq
+    dnsutils
+    glow
     btop
     bottom
     opentofu
