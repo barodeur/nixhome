@@ -5,6 +5,8 @@
     git = {
       enable = true;
 
+      lfs.enable = true;
+
       settings = {
         alias = {
           st = "status";
