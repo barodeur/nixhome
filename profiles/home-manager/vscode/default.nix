@@ -43,6 +43,21 @@
 
       "vim.useSystemClipboard" = true;
       "editor.lineNumbers" = "relative";
+
+      # VS Code tries to persist trusted schema domains on startup. Since
+      # settings.json is a read-only Nix store symlink, that write fails and
+      # VS Code reopens settings.json as an unsaved buffer every launch.
+      # Declaring the value here keeps the on-disk file in sync.
+      "json.schemaDownload.trustedDomains" = {
+        "https://schemastore.azurewebsites.net/" = true;
+        "https://raw.githubusercontent.com/microsoft/vscode/" = true;
+        "https://raw.githubusercontent.com/devcontainers/spec/" = true;
+        "https://www.schemastore.org/" = true;
+        "https://json.schemastore.org/" = true;
+        "https://json-schema.org/" = true;
+        "https://developer.microsoft.com/json-schemas/" = true;
+        "https://biomejs.dev" = true;
+      };
     };
   };
 }
