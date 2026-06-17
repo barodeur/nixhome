@@ -21,6 +21,7 @@
       ../../profiles/home-manager/kubernetes
       ../../profiles/home-manager/mise
       ../../profiles/home-manager/vscode
+      ../../profiles/home-manager/ghostty
     ];
   };
 }
