@@ -36,7 +36,11 @@
         kb_options = "caps:escape";
         follow_mouse = 1;
         sensitivity = 0;
-        natural_scroll = true;
+        natural_scroll = false;
+
+        touchpad = {
+          natural_scroll = false;
+        };
       };
 
       cursor = {
