@@ -19,6 +19,7 @@
       settings = {
         all_compile = false;
         ruby = { compile = false; };
+        trusted_config_paths = [ "~/.superconductor/worktrees" "~/.wt/worktrees" ];
       };
     };
   };
