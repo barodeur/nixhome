@@ -27,8 +27,10 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  # networking.networkmanager.enable = true;
+  # Enable networking. This was previously switched on implicitly by the GNOME
+  # desktop module; it has to be explicit now that GNOME is gone, or the host
+  # falls back to dhcpcd with no wpa_supplicant and loses wifi entirely.
+  networking.networkmanager.enable = true;
 
   networking.networkmanager.wifi.powersave = false;
 
@@ -55,7 +57,6 @@
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -80,6 +81,13 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  # Also previously implicit via GNOME. Network printer discovery needs mDNS.
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   services.flatpak.enable = true;
 
