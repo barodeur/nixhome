@@ -48,6 +48,7 @@
     sops
     age
     socat
+    nixpkgs-fmt
 
     # Virtualization
     qemu

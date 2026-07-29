@@ -175,7 +175,7 @@
     settings = {
       general = {
         hide_cursor = true;
-        grace = 5;
+        grace = 0;
       };
       background = [{
         monitor = "";
