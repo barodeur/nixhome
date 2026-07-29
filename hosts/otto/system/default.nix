@@ -64,6 +64,18 @@
     options = "caps:escape";
   };
 
+  # Declared explicitly rather than inherited from the GNOME desktop module,
+  # which this host does not use (only Hyprland sessions are ever launched).
+  # The hyprland portal comes from the home-manager hyprland profile; gtk is
+  # what GTK apps and flatpaks use for file chooser and settings.
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.gdm-password.enableGnomeKeyring = true;
+
   services.fwupd.enable = true;
 
   # Enable CUPS to print documents.

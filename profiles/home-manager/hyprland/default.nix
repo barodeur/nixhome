@@ -148,6 +148,10 @@
     '';
   };
 
+  # Nothing was providing a polkit authentication agent: that was gnome-shell's
+  # job, and gnome-shell never runs on this host.
+  services.hyprpolkitagent.enable = true;
+
   services.hypridle = {
     enable = true;
     settings = {
