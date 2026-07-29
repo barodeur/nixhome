@@ -125,12 +125,14 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    _1password-cli
-    _1password-gui
-  ];
+  # 1Password through the NixOS modules rather than raw packages: they install
+  # the setuid 1Password-BrowserSupport helper and the polkit policy that
+  # browser unlock and CLI biometric auth depend on.
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "paul" ];
+  };
 
   virtualisation = {
     # Rootless only. The rootful daemon plus `docker` group membership is
