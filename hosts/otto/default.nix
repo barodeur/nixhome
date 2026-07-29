@@ -100,7 +100,15 @@
   services.flatpak.enable = true;
   services.flatpak.packages = [
     "com.github.tchx84.Flatseal"
+    "com.valvesoftware.Steam"
+    "com.valvesoftware.Steam.CompatibilityTool.Proton-GE"
+    "im.riot.Riot"
+    "net.lutris.Lutris"
     "org.chromium.Chromium"
+    # Runtime extension, so the ref carries the runtime version rather than a
+    # "stable" branch. When Steam's runtime moves off 25.08 this ref stops
+    # resolving and the install fails loudly; bump the branch to match.
+    "runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/25.08"
     "org.mozilla.firefox"
     "org.prismlauncher.PrismLauncher"
     "org.scummvm.ScummVM"
@@ -113,6 +121,33 @@
   # result back here afterwards.
   services.flatpak.overrides = {
     global.Context.sockets = [ "wayland" "!x11" "fallback-x11" ];
+
+    "com.valvesoftware.Steam".Context = {
+      # The Steam client is X11-only and so are many games. The global
+      # "fallback-x11" only grants X11 when no Wayland socket exists, and under
+      # Hyprland one always does. It must be negated as well as granting x11:
+      # flatpak checks fallback-x11 first and, when Wayland is up, that branch
+      # denies X11 outright and the plain "x11" grant never gets consulted.
+      # The cost is that anything Steam runs can snoop other Xwayland clients'
+      # input; native Wayland apps stay out of reach.
+      sockets = [ "x11" "!fallback-x11" ];
+
+      # Drop the removable-media and secondary-mount access the manifest ships
+      # with. Games live in ~/.var/app/com.valvesoftware.Steam on the single
+      # internal disk, so nothing needs these.
+      filesystems = [ "!/mnt" "!/media" "!/run/media" ];
+    };
+
+    "net.lutris.Lutris".Context = {
+      # Same X11 reasoning as Steam: Lutris runs Wine games, which are X11-only.
+      sockets = [ "x11" "!fallback-x11" ];
+
+      # Lutris ships filesystems=home, i.e. read-write over ~/.ssh, ~/.gnupg and
+      # everything else. That is the whole reason we went to Flatpak, so revoke
+      # it and hand back only a game directory. Its own ~/.var/app data and the
+      # read-only Steam library it imports from are unaffected by "!home".
+      filesystems = [ "!home" "~/Games:create" "!/media" "!/run/media" ];
+    };
   };
 
   programs.kitty.enable = true;
