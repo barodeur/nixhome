@@ -4,6 +4,11 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # otto's system runs the stable release, pinned to the exact revision the
+    # channel-based config was on at migration time so the switch is a no-op.
+    # Bump deliberately with `nix flake update nixpkgs-stable`.
+    nixpkgs-stable.url = "github:nixos/nixpkgs/2f5a153c270b70cb0f8c11f46d96d6d3bc39f4e3";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +31,7 @@
     { self
     , home-manager
     , nixpkgs
+    , nixpkgs-stable
     , darwin
     , flake-utils
     , fenix
@@ -55,6 +61,12 @@
         system = "aarch64-darwin";
         inherit inputs;
         modules = [ home-manager.darwinModules.home-manager ./hosts/cmpc ];
+      };
+
+      nixosConfigurations.otto = nixpkgs-stable.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/otto/system ];
       };
 
       homeConfigurations."paul@otto" = home-manager.lib.homeManagerConfiguration {
