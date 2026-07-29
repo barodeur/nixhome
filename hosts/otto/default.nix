@@ -50,6 +50,13 @@
     socat
     nixpkgs-fmt
 
+    # Runs AppImages under an FHS sandbox. Their bundled binaries are prebuilt
+    # against a standard filesystem layout and can't resolve their libraries on
+    # NixOS — the wt desktop app's Electron misses 27 of them without this.
+    # ~/.local/share/applications/wt.desktop (written by wt's `make install`)
+    # invokes it directly, so the launcher entry is dead until this is present.
+    appimage-run
+
     # Virtualization
     qemu
     virt-manager
