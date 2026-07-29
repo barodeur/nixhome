@@ -18,6 +18,18 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Kept for reference: the mt7925e workaround, removed 2026-07-29 on the
+  # assumption that kernel 7.1.5 carries the deadlock fixes that were expected
+  # in 6.19+. That assumption is UNVERIFIED — the failure mode is a hang or a
+  # dead wifi interface while roaming on 6GHz, and no 6GHz roam has happened
+  # since. Restore this and rebuild if that turns up.
+  # See https://github.com/zbowling/mt7925
+  #
+  # boot.extraModprobeConfig = ''
+  #   options mt7925e disable_aspm=Y
+  #   options mt7925-common disable_clc=1
+  # '';
+
   boot.initrd.luks.devices."luks-214a2870-8273-4821-8dea-5afacc278ae9".device = "/dev/disk/by-uuid/214a2870-8273-4821-8dea-5afacc278ae9";
   networking.hostName = "otto"; # Define your hostname.
   networking.domain = "chobert.net";
