@@ -29,7 +29,6 @@
 
   home.packages = with pkgs; [
     wget
-    prismlauncher
     grim
     slurp
     nerd-fonts.jetbrains-mono
@@ -48,8 +47,6 @@
     opentofu
     sops
     age
-    telegram-desktop
-    chromium
     socat
 
     # Virtualization
@@ -70,8 +67,8 @@
 
   xdg.desktopEntries.whatsapp = {
     name = "WhatsApp";
-    exec = "${pkgs.chromium}/bin/chromium --app=https://web.whatsapp.com";
-    icon = "chromium";
+    exec = "flatpak run org.chromium.Chromium --app=https://web.whatsapp.com";
+    icon = "org.chromium.Chromium";
     comment = "WhatsApp Web";
     categories = [ "Network" "InstantMessaging" ];
   };
@@ -94,12 +91,23 @@
 
   services.flatpak.enable = true;
   services.flatpak.packages = [
-    "org.signal.Signal"
+    "com.github.tchx84.Flatseal"
+    "org.chromium.Chromium"
+    "org.mozilla.firefox"
+    "org.prismlauncher.PrismLauncher"
     "org.scummvm.ScummVM"
+    "org.signal.Signal"
+    "org.telegram.desktop"
   ];
+
+  # Permissions are declared here rather than clicked into Flatseal, so they
+  # survive a reinstall. Flatseal still works for experimenting; write the
+  # result back here afterwards.
+  services.flatpak.overrides = {
+    global.Context.sockets = [ "wayland" "!x11" "fallback-x11" ];
+  };
 
   programs.kitty.enable = true;
   programs.ghostty.enable = true;
-  programs.firefox.enable = true;
   programs.home-manager.enable = true;
 }
