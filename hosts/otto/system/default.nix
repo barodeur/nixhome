@@ -110,7 +110,7 @@
   users.users.paul = {
     isNormalUser = true;
     description = "Paul Chobert";
-    extraGroups = [ "networkmanager" "wheel" "libvirt" "kvm" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "kvm" ];
     shell = pkgs.zsh;
   };
 
