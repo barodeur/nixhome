@@ -54,7 +54,7 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  services.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -168,6 +168,10 @@
   # networking.firewall.enable = false;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # The system is built from this flake, not from a channel. Leaving channels
+  # enabled would only keep a stale nixpkgs in root's profile that nothing reads.
+  nix.channel.enable = false;
 
   nix.gc = {
     automatic = true;
