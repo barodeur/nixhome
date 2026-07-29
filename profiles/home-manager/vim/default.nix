@@ -15,11 +15,11 @@ in
         bat
         fd
         # fenix.rust-analyzer
-        nodePackages.eslint_d
-        nodePackages.prettier
-        nodePackages.typescript
-        nodePackages.typescript-language-server
-        nodePackages.yaml-language-server
+        eslint_d
+        prettier
+        typescript
+        typescript-language-server
+        yaml-language-server
         ripgrep
         # rnix-lsp
         shellcheck
