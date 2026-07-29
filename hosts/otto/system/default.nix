@@ -110,7 +110,7 @@
   users.users.paul = {
     isNormalUser = true;
     description = "Paul Chobert";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirt" "kvm" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirt" "kvm" ];
     shell = pkgs.zsh;
   };
 
@@ -133,9 +133,14 @@
   ];
 
   virtualisation = {
+    # Rootless only. The rootful daemon plus `docker` group membership is
+    # equivalent to passwordless root (`docker run -v /:/host ...`).
     docker = {
-      enable = true;
-      rootless.enable = true;
+      enable = false;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
     };
 
     libvirtd.enable = true;
