@@ -10,6 +10,10 @@ in
       viAlias = true;
       vimAlias = true;
 
+      # Explicit to silence the warning about the default flipping in 26.05.
+      withRuby = true;
+      withPython3 = true;
+
       extraPackages = with pkgs; [
         actionlint
         bat

@@ -14,6 +14,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # For otto, whose whole closure builds from nixpkgs-stable. The release
+    # branch must match the nixpkgs-stable release.
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +37,7 @@
   outputs =
     { self
     , home-manager
+    , home-manager-stable
     , nixpkgs
     , nixpkgs-stable
     , darwin
@@ -63,21 +71,23 @@
         modules = [ home-manager.darwinModules.home-manager ./hosts/cmpc ];
       };
 
+      # System and home in one configuration: home-manager runs as a NixOS
+      # module, so `nixos-rebuild switch` applies both atomically, all from
+      # nixpkgs-stable.
       nixosConfigurations.otto = nixpkgs-stable.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
-        modules = [ ./hosts/otto/system ];
-      };
-
-      homeConfigurations."paul@otto" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [ fenix.overlays.default ];
-          config.allowUnfree = true;
-        };
         modules = [
-          nix-flatpak.homeManagerModules.nix-flatpak
-          ./hosts/otto
+          ./hosts/otto/system
+          home-manager-stable.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.paul.imports = [
+              nix-flatpak.homeManagerModules.nix-flatpak
+              ./hosts/otto
+            ];
+          }
         ];
       };
 

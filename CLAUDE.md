@@ -13,10 +13,11 @@ This is a Nix flake-based multi-machine dotfiles/system configuration repo manag
 darwin-rebuild switch --flake .
 ```
 
-**Linux host (otto)** — system and home are separate configurations, rebuilt independently:
+**Linux host (otto)** — home-manager runs as a NixOS module, so one rebuild
+applies system (`hosts/otto/system/`) and home (`hosts/otto/default.nix`)
+together (`otto-rebuild` is a wrapper for this):
 ```
-sudo nixos-rebuild switch --flake .#otto    # system (hosts/otto/system/)
-home-manager switch --flake .#paul@otto     # home   (hosts/otto/default.nix)
+sudo nixos-rebuild switch --flake .#otto
 ```
 Do not use plain `nixos-rebuild switch` on otto — it builds from the channel and
 would undo the flake-managed system config.
@@ -30,8 +31,8 @@ nixpkgs-fmt <file.nix>
 
 The flake defines three types of configurations:
 - `darwinConfigurations` — macOS hosts using nix-darwin + home-manager as a darwin module
-- `nixosConfigurations` — otto's NixOS system config, built from `nixpkgs-stable` (pinned to the stable release) rather than the unstable `nixpkgs` the rest of the flake uses
-- `homeConfigurations` — standalone home-manager for NixOS/Linux hosts
+- `nixosConfigurations` — otto's system + home, built entirely from `nixpkgs-stable` (pinned to the stable release) with `home-manager-stable` as a NixOS module, rather than the unstable `nixpkgs` the rest of the flake uses
+- `homeConfigurations` — standalone home-manager for non-NixOS Linux hosts (devcontainers)
 
 ### Directory structure
 
@@ -44,8 +45,8 @@ The flake defines three types of configurations:
 ### Key patterns
 
 - Darwin hosts compose via: host → profiles/{base,common,home-manager} → users/paul/darwin.nix → users/paul/common.nix (which imports home-manager profile modules).
-- The Linux host (otto) is a standalone home-manager config that directly imports the profile modules it needs, bypassing base/common/home-manager profiles (those are darwin-specific). Its NixOS system config lives separately in `hosts/otto/system/` and is not imported by the home-manager config.
-- The fenix overlay provides the Rust toolchain and is applied differently per platform: via `profiles/base` for darwin, via `nixpkgs` overlay in flake.nix for otto.
+- The Linux host (otto) wires `hosts/otto` (the home config, which directly imports the profile modules it needs, bypassing the darwin-specific base/common/home-manager profiles) into its system config via the home-manager NixOS module in flake.nix. `hosts/otto/system/` holds the system half.
+- The fenix overlay provides the Rust toolchain on darwin via `profiles/base`; otto does not use it.
 
 ## Git Commits
 

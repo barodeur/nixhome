@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -28,6 +28,15 @@
   };
 
   home.packages = with pkgs; [
+    # Home-manager runs as a NixOS module on this host, so one rebuild
+    # applies system and home together.
+    (writeShellScriptBin "otto-rebuild" ''
+      set -euo pipefail
+      flake="''${FLAKE_DIR:-$HOME/projects/nixhome}"
+      sudo nixos-rebuild switch --flake "$flake#otto"
+    '')
+
+    nautilus
     wget
     grim
     slurp
@@ -80,10 +89,12 @@
     categories = [ "Network" "InstantMessaging" ];
   };
 
+  # profileDirectory resolves to /etc/profiles/per-user/paul under the NixOS
+  # module's useUserPackages; ~/.nix-profile no longer has hm-session-vars.sh.
   programs.bash = {
     enable = true;
     initExtra = ''
-      . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      . "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh"
     '';
   };
 
@@ -159,5 +170,4 @@
 
   programs.kitty.enable = true;
   programs.ghostty.enable = true;
-  programs.home-manager.enable = true;
 }
