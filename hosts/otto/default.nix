@@ -186,6 +186,22 @@
       filesystems = [ "!/mnt" "!/media" "!/run/media" ];
     };
 
+    "im.riot.Riot" = {
+      # Element keeps the pickle key that unlocks the local session in
+      # Electron's safeStorage, which reaches gnome-keyring over the Secret
+      # Service bus name. The manifest never requests that name, so inside the
+      # sandbox it does not resolve at all and Element degrades to storing the
+      # key in the clear.
+      "Session Bus Policy"."org.freedesktop.secrets" = "talk";
+
+      # Reaching the daemon is only half of it. Chromium picks its password
+      # store from XDG_CURRENT_DESKTOP and does not recognise "Hyprland", so it
+      # would still select the plaintext backend; claiming GNOME is what makes
+      # it choose gnome-libsecret. Element records the backend it wrote with
+      # and passes --password-store itself on subsequent starts.
+      Environment.XDG_CURRENT_DESKTOP = "GNOME";
+    };
+
     "net.lutris.Lutris".Context = {
       # Same X11 reasoning as Steam: Lutris runs Wine games, which are X11-only.
       sockets = [ "x11" "!fallback-x11" ];
