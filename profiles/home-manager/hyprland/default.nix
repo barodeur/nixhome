@@ -32,7 +32,9 @@
 
       input = {
         kb_layout = "us";
-        kb_variant = "altgr-intl";
+        # Mac US layout: macOS-style dead keys on right Alt (e.g. Alt+e then a
+        # letter for the acute accent), instead of altgr-intl's own scheme.
+        kb_variant = "mac";
         kb_options = "caps:escape";
         follow_mouse = 1;
         sensitivity = 0;
