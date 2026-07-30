@@ -228,7 +228,9 @@
         }
         {
           timeout = 600;
-          on-timeout = "systemctl suspend";
+          # Sleeps normally, then hibernates after HibernateDelaySec (system
+          # config), so an idle night or weekend costs no battery.
+          on-timeout = "systemctl suspend-then-hibernate";
         }
       ];
     };

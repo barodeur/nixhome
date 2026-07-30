@@ -114,6 +114,22 @@
     };
   };
 
+  # How long suspend-then-hibernate (idle timeout and lid close) stays in
+  # plain suspend before waking briefly to hibernate.
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "2h";
+  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+
+  # Hibernate cleanly before the battery runs out instead of dying at 0%.
+  # Action fires at 5% rather than upower's default 2% so there is comfortable
+  # power left to write RAM to swap.
+  services.upower = {
+    enable = true;
+    percentageLow = 15;
+    percentageCritical = 8;
+    percentageAction = 5;
+    criticalPowerAction = "Hibernate";
+  };
+
   # Lets waybar's battery-module picker switch the limit without a password
   # prompt. Exact commands only: framework_tool can also flash the EC, so no
   # wildcard.
