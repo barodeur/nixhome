@@ -6,6 +6,31 @@
     cliphist
   ];
 
+  # Replaces the XCURSOR_*/HYPRCURSOR_* env vars that were set only for
+  # Hyprland: this propagates the theme to GTK apps and flatpaks too (the
+  # theme gets linked into ~/.icons, which flatpak exposes to sandboxes).
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 24;
+    gtk.enable = true;
+    hyprcursor.enable = true;
+  };
+
+  gtk = {
+    enable = true;
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
+  };
+
+  # The settings portal serves these to flatpaks; without them flatpak apps
+  # render light and fall back to the Adwaita cursor.
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
+    cursor-theme = "Bibata-Modern-Classic";
+    cursor-size = 24;
+  };
+
   # Clipboard history: wl-paste watchers store every copy (text and images)
   # into cliphist's db; $mod SHIFT V opens the picker.
   services.cliphist = {
@@ -42,9 +67,6 @@
       };
 
       env = [
-        "XCURSOR_SIZE,24"
-        "HYPRCURSOR_SIZE,24"
-        "XCURSOR_THEME,Bibata-Modern-Classic"
         "XDG_DATA_DIRS,$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
         # Since GTK 4.20, GTK on Wayland no longer composes dead keys itself
         # unless an input method is present; without this, dead keys are dropped
@@ -246,5 +268,65 @@
     };
   };
 
-  programs.wofi.enable = true;
+  programs.wofi = {
+    enable = true;
+    settings = {
+      width = 600;
+      height = 340;
+      insensitive = true;
+      allow_images = true;
+      image_size = 24;
+      # Expanding the "> app with actions" groups has no default keybinding.
+      key_expand = "Right";
+    };
+    # Same palette as waybar/mako: dark translucent background, cyan accents.
+    style = ''
+      * {
+        font-family: "JetBrainsMono Nerd Font", monospace;
+        font-size: 13px;
+      }
+
+      window {
+        background-color: rgba(15, 15, 25, 0.92);
+        border: 1px solid rgba(51, 204, 255, 0.25);
+        border-radius: 12px;
+        color: #c8d0e0;
+      }
+
+      #input {
+        margin: 8px;
+        padding: 6px 10px;
+        border: 1px solid rgba(51, 204, 255, 0.25);
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.04);
+        color: #e0e6f0;
+      }
+
+      #input:focus {
+        border-color: rgba(51, 204, 255, 0.5);
+      }
+
+      #inner-box {
+        margin: 0 8px 8px;
+      }
+
+      #entry {
+        padding: 6px 10px;
+        border-radius: 8px;
+      }
+
+      #img {
+        margin-right: 8px;
+      }
+
+      #entry:selected {
+        background: linear-gradient(135deg, rgba(51, 204, 255, 0.25), rgba(0, 255, 153, 0.18));
+        color: #ffffff;
+      }
+
+      #entry:selected #text {
+        color: #ffffff;
+      }
+    '';
+  };
 }

@@ -35,7 +35,6 @@
     pavucontrol
     bluetui
     brightnessctl
-    bibata-cursors
     gh
     zed-editor
     libnotify
