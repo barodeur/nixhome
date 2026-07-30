@@ -147,6 +147,14 @@
       # read-only Steam library it imports from are unaffected by "!home".
       filesystems = [ "!home" "~/Games:create" "!/media" "!/run/media" ];
     };
+
+    "org.prismlauncher.PrismLauncher".Context = {
+      # The launcher itself is Qt and happy on Wayland, but the Minecraft it
+      # spawns initializes GLFW on the X11 platform, so without a DISPLAY the
+      # game crashes at startup ("The DISPLAY environment variable is
+      # missing"). Same fallback-x11 negation dance as Steam.
+      sockets = [ "x11" "!fallback-x11" ];
+    };
   };
 
   programs.kitty.enable = true;
