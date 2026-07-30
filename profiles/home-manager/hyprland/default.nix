@@ -1,6 +1,24 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    wl-clipboard
+    cliphist
+  ];
+
+  # Clipboard history: wl-paste watchers store every copy (text and images)
+  # into cliphist's db; $mod SHIFT V opens the picker.
+  services.cliphist = {
+    enable = true;
+    allowImages = true;
+  };
+
+  # grim exits with an error and no screenshot if the target directory is
+  # missing, and nothing else creates it.
+  systemd.user.tmpfiles.rules = [
+    "d %h/Pictures/Screenshots - - - -"
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
@@ -98,9 +116,12 @@
         # Lock screen
         "$mod CTRL, L, exec, hyprlock"
 
-        # Screenshots
-        "$mod, Print, exec, grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png"
-        '', Print, exec, grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png''
+        # Screenshots: saved to disk and copied to the clipboard
+        "$mod, Print, exec, grim - | tee ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png | wl-copy"
+        '', Print, exec, grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png | wl-copy''
+
+        # Clipboard history
+        "$mod SHIFT, V, exec, cliphist list | wofi --dmenu --prompt 'Clipboard' | cliphist decode | wl-copy"
 
         # Move to workspace
         "$mod SHIFT, 1, movetoworkspace, 1"
