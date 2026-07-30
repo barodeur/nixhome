@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.waybar = {
@@ -19,7 +19,7 @@
 
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "battery" "tray" ];
+        modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "temperature" "custom/fan" "custom/power-profile" "battery" "tray" ];
 
         "hyprland/workspaces" = {
           format = "{name}";
@@ -28,20 +28,62 @@
         };
 
         clock = {
-          format = "  {:%H:%M}";
-          format-alt = "  {:%A, %B %d}";
+          format = "󰥔 {:%H:%M}";
+          format-alt = "󰃭 {:%A, %B %d}";
           tooltip-format = "<tt>{calendar}</tt>";
         };
 
         cpu = {
-          format = "  {usage}%";
+          format = "󰻠 {usage:02}%";
           interval = 2;
         };
 
         memory = {
-          format = "  {percentage}%";
+          format = "󰍛 {percentage:02}%";
           tooltip-format = "{used:0.1f}G / {total:0.1f}G used";
           interval = 2;
+        };
+
+        # Fan RPM from the EC via framework-laptop-kmod's cros_ec hwmon; looked
+        # up by name because hwmon indices shift between boots.
+        "custom/fan" = {
+          exec = "for h in /sys/class/hwmon/hwmon*; do [ \"$(cat $h/name)\" = cros_ec ] && cat $h/fan1_input && break; done";
+          interval = 5;
+          format = "󰈐 {}rpm";
+          tooltip = false;
+        };
+
+        # CPU die temperature (k10temp Tctl), addressed by PCI device path
+        # because hwmon indices shift between boots.
+        temperature = {
+          hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
+          input-filename = "temp1_input";
+          interval = 5;
+          warning-threshold = 80;
+          critical-threshold = 95;
+          format = "󰔏 {temperatureC}°C";
+        };
+
+        # A custom module instead of the built-in power-profiles-daemon one:
+        # that module hardcodes click-to-cycle and ignores on-click, and we
+        # want a wofi picker.
+        "custom/power-profile" = {
+          return-type = "json";
+          interval = 5;
+          exec = pkgs.writeShellScript "power-profile-status" ''
+            p=$(powerprofilesctl get)
+            case "$p" in
+              performance) i="󰓅" ;;
+              power-saver) i="󰾆" ;;
+              *) i="󰾅" ;;
+            esac
+            printf '{"text":"%s","class":"%s","tooltip":"Power profile: %s"}\n' "$i" "$p" "$p"
+          '';
+          on-click = pkgs.writeShellScript "power-profile-menu" ''
+            chosen=$(printf 'power-saver\nbalanced\nperformance\n' \
+              | wofi --dmenu --insensitive --prompt 'Power profile')
+            [ -n "$chosen" ] && powerprofilesctl set "$chosen"
+          '';
         };
 
         battery = {
@@ -49,22 +91,22 @@
             warning = 30;
             critical = 15;
           };
-          format = "{icon}  {capacity}%";
-          format-charging = "  {capacity}%";
-          format-plugged = "  {capacity}%";
-          format-icons = [ "" "" "" "" "" ];
+          format = "{icon} {capacity:02}%";
+          format-charging = "󰂄 {capacity:02}%";
+          format-plugged = "󰚥 {capacity:02}%";
+          format-icons = [ "󰁺" "󰁼" "󰁾" "󰂀" "󰁹" ];
         };
 
         backlight = {
-          format = "{icon}  {percent}%";
-          format-icons = [ "" "" "" "" "" "" "" "" "" ];
+          format = "{icon} {percent:02}%";
+          format-icons = [ "󰃞" "󰃟" "󰃠" ];
           scroll-step = 5;
           on-scroll-up = "brightnessctl set +5%";
           on-scroll-down = "brightnessctl set 5%-";
         };
 
         bluetooth = {
-          format = "";
+          format = "󰂯";
           format-off = "󰂲";
           format-disabled = "󰂲";
           format-connected = "󰂱";
@@ -73,18 +115,18 @@
         };
 
         network = {
-          format-wifi = "  {signalStrength}%";
-          format-ethernet = "  {ipaddr}/{cidr}";
-          format-disconnected = "  Off";
+          format-wifi = "󰤨 {signalStrength:02}%";
+          format-ethernet = "󰈀 {ipaddr}/{cidr}";
+          format-disconnected = "󰤭 Off";
           tooltip-format-wifi = "{essid} ({signalStrength}%)";
           on-click = "ghostty -e nmtui";
         };
 
         pulseaudio = {
-          format = "{icon}  {volume}%";
-          format-muted = "  Muted";
+          format = "{icon} {volume:02}%";
+          format-muted = "󰝟 Muted";
           format-icons = {
-            default = [ "" "" "" ];
+            default = [ "󰕿" "󰖀" "󰕾" ];
           };
           on-click = "pavucontrol";
         };
@@ -169,6 +211,9 @@
       #bluetooth,
       #backlight,
       #pulseaudio,
+      #custom-power-profile,
+      #custom-fan,
+      #temperature,
       #tray {
         padding: 4px 12px;
         margin: 3px 2px;
@@ -183,7 +228,10 @@
       #network:hover,
       #bluetooth:hover,
       #backlight:hover,
-      #pulseaudio:hover {
+      #pulseaudio:hover,
+      #custom-power-profile:hover,
+      #custom-fan:hover,
+      #temperature:hover {
         background: rgba(51, 204, 255, 0.08);
       }
 
@@ -204,6 +252,16 @@
       #bluetooth.disabled { color: rgba(200, 208, 224, 0.3); }
       #bluetooth.off { color: rgba(200, 208, 224, 0.3); }
       #bluetooth.connected { color: #33ccff; }
+
+      #custom-fan { color: #e0c880; }
+
+      #temperature { color: #e0c880; }
+      #temperature.warning { color: #f0b070; }
+      #temperature.critical { color: #ff6478; }
+
+      #custom-power-profile { color: #8edba6; }
+      #custom-power-profile.performance { color: #ff6478; }
+      #custom-power-profile.power-saver { color: #7aafff; }
 
       #battery { color: #8edba6; }
       #battery.warning { color: #f0b070; }
