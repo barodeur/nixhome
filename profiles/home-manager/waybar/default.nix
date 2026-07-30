@@ -3,6 +3,10 @@
 {
   programs.waybar = {
     enable = true;
+    # Run as a user service under graphical-session.target (UWSM activates it)
+    # rather than exec-once: restarts on crash, and home-manager switch
+    # restarts it so config changes apply without relogging.
+    systemd.enable = true;
     settings = {
       mainBar = {
         layer = "top";

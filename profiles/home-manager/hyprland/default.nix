@@ -154,11 +154,6 @@
       windowrule = [
         "float true, center true, size 800 600, match:class ^(1password)$"
       ];
-
-      exec-once = [
-        "waybar"
-        "sleep 2 && hyprctl hyprpaper wallpaper \", /home/paul/Pictures/wallpaper.jpg\""
-      ];
     };
     extraConfig = ''
       submap = resize
