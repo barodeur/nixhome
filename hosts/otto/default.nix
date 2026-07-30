@@ -90,6 +90,43 @@
     categories = [ "Network" "InstantMessaging" ];
   };
 
+  # Hand-edited mimeapps.list had drifted: http/https pointed at
+  # "firefox.desktop" and sgnl:// at "signal.desktop", neither of which exists
+  # — the flatpaks export org.mozilla.firefox.desktop and
+  # org.signal.Signal.desktop. A dangling association is skipped in silence
+  # rather than reported, so https fell through to Chromium, which is only
+  # installed to host WhatsApp.
+  xdg.mimeApps =
+    let
+      firefox = [ "org.mozilla.firefox.desktop" ];
+      signal = [ "org.signal.Signal.desktop" ];
+      telegram = [ "org.telegram.desktop.desktop" ];
+    in
+    {
+      enable = true;
+      defaultApplications = {
+        "text/html" = firefox;
+        "application/xhtml+xml" = firefox;
+        "application/x-extension-htm" = firefox;
+        "application/x-extension-html" = firefox;
+        "application/x-extension-shtml" = firefox;
+        "application/x-extension-xht" = firefox;
+        "application/x-extension-xhtml" = firefox;
+        "x-scheme-handler/http" = firefox;
+        "x-scheme-handler/https" = firefox;
+        "x-scheme-handler/chrome" = firefox;
+
+        "x-scheme-handler/sgnl" = signal;
+        "x-scheme-handler/signalcaptcha" = signal;
+        "x-scheme-handler/tg" = telegram;
+        "x-scheme-handler/tonsite" = telegram;
+
+        # Written by Claude Code into ~/.local/share/applications, not by this
+        # config; the association is ours to keep, the .desktop file is not.
+        "x-scheme-handler/claude-cli" = [ "claude-code-url-handler.desktop" ];
+      };
+    };
+
   # profileDirectory resolves to /etc/profiles/per-user/paul under the NixOS
   # module's useUserPackages; ~/.nix-profile no longer has hm-session-vars.sh.
   programs.bash = {
