@@ -83,11 +83,23 @@
 
   # Declared explicitly rather than inherited from the GNOME desktop module,
   # which this host does not use (only Hyprland sessions are ever launched).
-  # The hyprland portal comes from the home-manager hyprland profile; gtk is
-  # what GTK apps and flatpaks use for file chooser and settings.
+  # This installs the portal service itself. The backends paul's session
+  # actually loads are the ones in the home-manager profile, not these:
+  # NIX_XDG_DESKTOP_PORTAL_DIR is set per-session and home-manager's value
+  # wins, so both hyprland and gtk are declared in the hyprland home profile.
+  # gtk stays here for sessions without that variable (the gdm greeter, a
+  # root or bare-TTY session launching a flatpak).
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+    # Installing the gtk backend is not enough to make it run: gtk.portal
+    # declares "UseIn=gnome" and we launch as Hyprland, so without this
+    # xdg-desktop-portal loads only the hyprland backend and every interface
+    # gtk alone implements — OpenURI, FileChooser, Settings, Notification —
+    # simply does not exist on the bus. Flatpaks then fail silently: clicking a
+    # link inside one does nothing at all. Hyprland first, gtk for the rest.
+    config.hyprland.default = [ "hyprland" "gtk" ];
   };
 
   services.gnome.gnome-keyring.enable = true;

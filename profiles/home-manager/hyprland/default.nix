@@ -6,6 +6,16 @@
     cliphist
   ];
 
+  # The hyprland backend arrives with wayland.windowManager.hyprland below, but
+  # it only implements Screenshot, ScreenCast and GlobalShortcuts. gtk covers
+  # the rest — OpenURI, FileChooser, Settings, Notification — and it has to be
+  # declared *here*: nixpkgs patches xdg-desktop-portal to read backends from
+  # the single directory named by NIX_XDG_DESKTOP_PORTAL_DIR, which
+  # home-manager points at the user profile. A gtk portal installed at the
+  # system level never gets looked at, and the interfaces it should provide
+  # just do not exist on the bus (flatpaks then fail to open links in silence).
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
   # Replaces the XCURSOR_*/HYPRCURSOR_* env vars that were set only for
   # Hyprland: this propagates the theme to GTK apps and flatpaks too (the
   # theme gets linked into ~/.icons, which flatpak exposes to sandboxes).
