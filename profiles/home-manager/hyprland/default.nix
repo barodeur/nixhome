@@ -46,6 +46,8 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    # Explicit: the default moves to "lua"; this config is hyprlang-shaped.
+    configType = "hyprlang";
     settings = {
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
@@ -91,6 +93,13 @@
 
       cursor = {
         hide_on_key_press = true;
+      };
+
+      # Never upscale XWayland apps (Steam, 1Password, Wine games): at the 1.6
+      # fractional scale they'd render at 1x and get stretched blurry. With
+      # this they render sharp but small; DPI-aware ones can scale themselves.
+      xwayland = {
+        force_zero_scaling = true;
       };
 
       bind = [
@@ -216,6 +225,10 @@
           timeout = 330;
           on-timeout = "hyprctl dispatch dpms off";
           on-resume = "hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 600;
+          on-timeout = "systemctl suspend";
         }
       ];
     };

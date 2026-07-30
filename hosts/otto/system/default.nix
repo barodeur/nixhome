@@ -70,12 +70,16 @@
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
 
-  # Configure keymap in X11
+  # Configure keymap in X11. The variant matches the Hyprland session's
+  # us(mac), so GDM's password prompt types the same layout as the desktop.
   services.xserver.xkb = {
     layout = "us";
-    variant = "";
+    variant = "mac";
     options = "caps:escape";
   };
+
+  # Virtual consoles use the xkb layout above instead of plain us.
+  console.useXkbConfig = true;
 
   # Declared explicitly rather than inherited from the GNOME desktop module,
   # which this host does not use (only Hyprland sessions are ever launched).
@@ -90,6 +94,14 @@
   security.pam.services.gdm-password.enableGnomeKeyring = true;
 
   services.fwupd.enable = true;
+
+  # CPU power profile switching (balanced/power-saver/performance). GNOME used
+  # to pull this in; without it the machine always runs the firmware default.
+  services.power-profiles-daemon.enable = true;
+
+  # Trash, MTP and drive mounting for nautilus, which runs outside GNOME here.
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
