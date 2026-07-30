@@ -95,6 +95,19 @@
           format-charging = "󰂄 {capacity:02}%";
           format-plugged = "󰚥 {capacity:02}%";
           format-icons = [ "󰁺" "󰁼" "󰁾" "󰂀" "󰁹" ];
+          # The sudo rule in hosts/otto/system allows exactly these two
+          # framework_tool invocations without a password.
+          on-click = pkgs.writeShellScript "charge-limit-menu" ''
+            chosen=$(printf '80%% — battery health (default)\n100%% — full charge for travel\n' \
+              | wofi --dmenu --insensitive --prompt 'Charge limit')
+            case "$chosen" in
+              80*) limit=80 ;;
+              100*) limit=100 ;;
+              *) exit 0 ;;
+            esac
+            sudo -n ${pkgs.framework-tool}/bin/framework_tool --charge-limit "$limit" \
+              && notify-send "Battery" "Charge limit set to $limit%"
+          '';
         };
 
         backlight = {

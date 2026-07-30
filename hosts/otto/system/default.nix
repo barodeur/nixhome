@@ -99,6 +99,33 @@
   # to pull this in; without it the machine always runs the firmware default.
   services.power-profiles-daemon.enable = true;
 
+  # Hold the battery at 80% while on the charger: living at 100% is what ages
+  # the cell. Reapplied every boot because the EC forgets the limit on some
+  # resets (firmware updates, battery disconnect). For a travel day, override
+  # with `sudo framework-tool --charge-limit 100`; this restores 80% on the
+  # next boot.
+  systemd.services.battery-charge-limit = {
+    description = "Set battery charge limit to 80%";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      # The package is framework-tool but the binary it ships is framework_tool.
+      ExecStart = "${pkgs.framework-tool}/bin/framework_tool --charge-limit 80";
+    };
+  };
+
+  # Lets waybar's battery-module picker switch the limit without a password
+  # prompt. Exact commands only: framework_tool can also flash the EC, so no
+  # wildcard.
+  security.sudo.extraRules = [{
+    users = [ "paul" ];
+    commands = map
+      (limit: {
+        command = "${pkgs.framework-tool}/bin/framework_tool --charge-limit ${limit}";
+        options = [ "NOPASSWD" ];
+      }) [ "80" "100" ];
+  }];
+
   # Trash, MTP and drive mounting for nautilus, which runs outside GNOME here.
   services.gvfs.enable = true;
   services.udisks2.enable = true;
