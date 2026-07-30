@@ -28,6 +28,10 @@
         "HYPRCURSOR_SIZE,24"
         "XCURSOR_THEME,Bibata-Modern-Classic"
         "XDG_DATA_DIRS,$HOME/.local/share/flatpak/exports/share:$XDG_DATA_DIRS"
+        # Since GTK 4.20, GTK on Wayland no longer composes dead keys itself
+        # unless an input method is present; without this, dead keys are dropped
+        # in ghostty and other GTK apps (https://github.com/ghostty-org/ghostty/discussions/8899).
+        "GTK_IM_MODULE,simple"
       ];
 
       input = {
