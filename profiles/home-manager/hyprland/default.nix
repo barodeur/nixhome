@@ -84,10 +84,12 @@
         kb_options = "caps:escape";
         follow_mouse = 1;
         sensitivity = 0;
-        natural_scroll = false;
+        # macOS-style scrolling: the content follows the fingers/wheel. macOS
+        # applies it to mice as well as trackpads, so both are set here.
+        natural_scroll = true;
 
         touchpad = {
-          natural_scroll = false;
+          natural_scroll = true;
         };
       };
 
