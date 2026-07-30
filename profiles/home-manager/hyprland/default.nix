@@ -157,14 +157,14 @@
         "$mod SHIFT, 9, movetoworkspace, 9"
       ];
 
-      # Volume and brightness
+      # Volume and brightness, through swayosd so an overlay shows the change
       bindel = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+        ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
+        ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+        ", XF86AudioMicMute, exec, swayosd-client --input-volume mute-toggle"
+        ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+        ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
       ];
 
       # Mouse bindings
@@ -195,6 +195,9 @@
   # Nothing was providing a polkit authentication agent: that was gnome-shell's
   # job, and gnome-shell never runs on this host.
   services.hyprpolkitagent.enable = true;
+
+  # OSD overlay for the volume/brightness keys bound above.
+  services.swayosd.enable = true;
 
   services.hypridle = {
     enable = true;
