@@ -32,6 +32,10 @@
     };
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
+
+    # Hardware quirks for otto (Framework 13 AMD AI 300). Modules only, no
+    # nixpkgs of its own to follow.
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs =
@@ -44,6 +48,7 @@
     , flake-utils
     , fenix
     , nix-flatpak
+    , nixos-hardware
     }@inputs: {
       overlay = final: prev: { my = self.packages.${final.system}; };
 
@@ -79,6 +84,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/otto/system
+          nixos-hardware.nixosModules.framework-amd-ai-300-series
           home-manager-stable.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
