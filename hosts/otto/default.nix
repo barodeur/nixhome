@@ -15,6 +15,7 @@
     ../../profiles/home-manager/vscode
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
+    ../../profiles/home-manager/eden
   ];
 
   home.username = "paul";
