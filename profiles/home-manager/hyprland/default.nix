@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
+let
+  stateDir = "${config.xdg.stateHome}/theme";
+in
 {
   home.packages = with pkgs; [
     wl-clipboard
@@ -27,16 +30,17 @@
     hyprcursor.enable = true;
   };
 
-  gtk = {
-    enable = true;
-    gtk3.extraConfig.gtk-application-prefer-dark-theme = true;
-    gtk4.extraConfig.gtk-application-prefer-dark-theme = true;
-  };
+  # No prefer-dark here any more: it is written into settings.ini, which is a
+  # read-only store symlink, so it pinned every GTK app dark and no runtime
+  # switch could override it. The colour scheme now lives in dconf alone, owned
+  # by theme-mode (profiles/home-manager/theme).
+  gtk.enable = true;
 
-  # The settings portal serves these to flatpaks; without them flatpak apps
-  # render light and fall back to the Adwaita cursor.
+  # The settings portal serves this to flatpaks; without it they fall back to
+  # the Adwaita cursor. color-scheme and gtk-theme are deliberately absent —
+  # home-manager reasserts dconf.settings on every rebuild, which would undo the
+  # current mode.
   dconf.settings."org/gnome/desktop/interface" = {
-    color-scheme = "prefer-dark";
     cursor-theme = "Bibata-Modern-Classic";
     cursor-size = 24;
   };
@@ -58,7 +62,12 @@
     enable = true;
     # Explicit: the default moves to "lua"; this config is hyprlang-shaped.
     configType = "hyprlang";
+    # $activeBorder and friends are defined by the palette, and hyprlang
+    # resolves variables in file order, so the source has to come first.
+    sourceFirst = true;
     settings = {
+      source = "${stateDir}/hypr.conf";
+
       "$mod" = "SUPER";
       "$terminal" = "ghostty";
       "$menu" = "wofi --show drun";
@@ -69,8 +78,8 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
+        "col.active_border" = "$activeBorder";
+        "col.inactive_border" = "$inactiveBorder";
         layout = "dwindle";
       };
 
@@ -250,7 +259,12 @@
 
   programs.hyprlock = {
     enable = true;
+    # hyprlock is spawned fresh at every lock, so it picks up whichever palette
+    # the symlink points at without needing to be reloaded.
+    sourceFirst = true;
     settings = {
+      source = "${stateDir}/hypr.conf";
+
       general = {
         hide_cursor = true;
         grace = 0;
@@ -265,9 +279,9 @@
         monitor = "";
         size = "200, 50";
         outline_thickness = 3;
-        outer_color = "rgba(33ccffee)";
-        inner_color = "rgba(0, 0, 0, 0.5)";
-        font_color = "rgb(200, 200, 200)";
+        outer_color = "$lockOuter";
+        inner_color = "$lockInner";
+        font_color = "$lockFont";
         fade_on_empty = true;
         placeholder_text = "Password...";
       }];
@@ -294,9 +308,9 @@
       default-timeout = 5000;
       border-radius = 10;
       border-size = 2;
-      border-color = "#33ccffee";
-      background-color = "#1a1b26ee";
-      text-color = "#c0caf5";
+      # The three colour keys live in the palette instead. home-manager emits
+      # global keys before sections, so the include lands where it needs to.
+      include = "${stateDir}/mako.conf";
       "app-name=\"Claude Code\"" = {
         default-timeout = 0;
       };
@@ -314,31 +328,33 @@
       # Expanding the "> app with actions" groups has no default keybinding.
       key_expand = "Right";
     };
-    # Same palette as waybar/mako: dark translucent background, cyan accents.
+    # Same palette as waybar and mako, resolved at runtime from the current mode.
     style = ''
+      @import url("file://${stateDir}/palette.css");
+
       * {
         font-family: "JetBrainsMono Nerd Font", monospace;
         font-size: 13px;
       }
 
       window {
-        background-color: rgba(15, 15, 25, 0.92);
-        border: 1px solid rgba(51, 204, 255, 0.25);
+        background-color: @bg-popup;
+        border: 1px solid @border-strong;
         border-radius: 12px;
-        color: #c8d0e0;
+        color: @text;
       }
 
       #input {
         margin: 8px;
         padding: 6px 10px;
-        border: 1px solid rgba(51, 204, 255, 0.25);
+        border: 1px solid @border-strong;
         border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.04);
-        color: #e0e6f0;
+        background-color: @surface;
+        color: @text-strong;
       }
 
       #input:focus {
-        border-color: rgba(51, 204, 255, 0.5);
+        border-color: @border-focus;
       }
 
       #inner-box {
@@ -355,12 +371,12 @@
       }
 
       #entry:selected {
-        background: linear-gradient(135deg, rgba(51, 204, 255, 0.25), rgba(0, 255, 153, 0.18));
-        color: #ffffff;
+        background: linear-gradient(135deg, @sel-from, @sel-to);
+        color: @sel-text;
       }
 
       #entry:selected #text {
-        color: #ffffff;
+        color: @sel-text;
       }
     '';
   };

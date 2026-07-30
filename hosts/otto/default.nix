@@ -13,6 +13,7 @@
     ../../profiles/home-manager/tmux
     ../../profiles/home-manager/mise
     ../../profiles/home-manager/vscode
+    ../../profiles/home-manager/theme
     ../../profiles/home-manager/hyprland
     ../../profiles/home-manager/waybar
     ../../profiles/home-manager/eden
@@ -223,5 +224,12 @@
   };
 
   programs.kitty.enable = true;
-  programs.ghostty.enable = true;
+
+  programs.ghostty = {
+    enable = true;
+    # Ghostty follows the desktop colour scheme by default, which would drag the
+    # terminal into light mode along with everything else. Pinning the theme it
+    # already used in dark mode opts it out; it stays dark in both.
+    settings.theme = "Ghostty Default Style Dark";
+  };
 }

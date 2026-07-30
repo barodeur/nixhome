@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
+let
+  stateDir = "${config.xdg.stateHome}/theme";
+in
 {
   programs.waybar = {
     enable = true;
@@ -19,7 +22,7 @@
 
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "temperature" "custom/fan" "custom/power-profile" "battery" "tray" ];
+        modules-right = [ "custom/theme" "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "temperature" "custom/fan" "custom/power-profile" "battery" "tray" ];
 
         "hyprland/workspaces" = {
           format = "{name}";
@@ -86,6 +89,22 @@
           '';
         };
 
+        # Light/dark switch. No interval: the only thing that changes the mode
+        # is theme-mode, and applying a mode reloads waybar, so the module is
+        # re-read exactly when it needs to be.
+        "custom/theme" = {
+          return-type = "json";
+          exec = pkgs.writeShellScript "theme-status" ''
+            m=$(theme-mode get)
+            case "$m" in
+              dark) i="󰖔" ;;
+              *) i="󰖨" ;;
+            esac
+            printf '{"text":"%s","class":"%s","tooltip":"%s mode — click to switch"}\n' "$i" "$m" "$m"
+          '';
+          on-click = "theme-mode toggle";
+        };
+
         battery = {
           states = {
             warning = 30;
@@ -150,6 +169,11 @@
       };
     };
     style = ''
+      /* Colours come from the mode-switched palette; see profiles/home-manager/
+         theme. The path is absolute because this file is a store symlink and a
+         relative import would resolve next to it, in /nix/store. */
+      @import url("file://${stateDir}/palette.css");
+
       * {
         font-family: "JetBrainsMono Nerd Font", monospace;
         font-size: 13px;
@@ -159,20 +183,20 @@
       }
 
       window#waybar {
-        background: rgba(15, 15, 25, 0.85);
+        background: @bg;
         border-radius: 12px;
-        border: 1px solid rgba(51, 204, 255, 0.12);
-        color: #c8d0e0;
+        border: 1px solid @border;
+        color: @text;
       }
 
       tooltip {
-        background: rgba(15, 15, 25, 0.95);
-        border: 1px solid rgba(51, 204, 255, 0.25);
+        background: @bg-elevated;
+        border: 1px solid @border-strong;
         border-radius: 8px;
       }
 
       tooltip label {
-        color: #c8d0e0;
+        color: @text;
       }
 
       /* ── Workspaces ── */
@@ -184,7 +208,7 @@
         padding: 2px 10px;
         margin: 3px 2px;
         border-radius: 8px;
-        color: rgba(200, 208, 224, 0.35);
+        color: @text-muted;
         background: transparent;
         border: 1px solid transparent;
         transition: all 0.25s ease;
@@ -192,26 +216,26 @@
       }
 
       #workspaces button:hover {
-        background: rgba(51, 204, 255, 0.1);
-        color: #33ccff;
+        background: @accent-hover;
+        color: @accent;
       }
 
       #workspaces button.active {
-        background: linear-gradient(135deg, rgba(51, 204, 255, 0.25), rgba(0, 255, 153, 0.18));
-        color: #ffffff;
-        border: 1px solid rgba(51, 204, 255, 0.35);
+        background: linear-gradient(135deg, @sel-from, @sel-to);
+        color: @sel-text;
+        border: 1px solid @sel-border;
       }
 
       #workspaces button.urgent {
-        background: rgba(255, 100, 120, 0.25);
-        color: #ff6478;
+        background: @urgent-bg;
+        color: @red;
       }
 
       /* ── Clock ── */
       #clock {
         font-weight: 600;
         font-size: 14px;
-        color: #e0e6f0;
+        color: @text-strong;
         padding: 4px 14px;
         margin: 3px 2px;
       }
@@ -226,12 +250,13 @@
       #pulseaudio,
       #custom-power-profile,
       #custom-fan,
+      #custom-theme,
       #temperature,
       #tray {
         padding: 4px 12px;
         margin: 3px 2px;
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.04);
+        background: @surface;
         transition: all 0.25s ease;
       }
 
@@ -244,42 +269,46 @@
       #pulseaudio:hover,
       #custom-power-profile:hover,
       #custom-fan:hover,
+      #custom-theme:hover,
       #temperature:hover {
-        background: rgba(51, 204, 255, 0.08);
+        background: @surface-hover;
       }
 
       /* ── Module colors ── */
-      #cpu { color: #7aafff; }
-      #memory { color: #c4a1f0; }
-      #pulseaudio { color: #8edba6; }
-      #backlight { color: #e0c880; }
+      #cpu { color: @blue; }
+      #memory { color: @purple; }
+      #pulseaudio { color: @green; }
+      #backlight { color: @yellow; }
 
       #pulseaudio.muted {
-        color: rgba(200, 208, 224, 0.3);
+        color: @text-dim;
       }
 
-      #network { color: #33ccff; }
-      #network.disconnected { color: rgba(200, 208, 224, 0.3); }
+      #network { color: @accent; }
+      #network.disconnected { color: @text-dim; }
 
-      #bluetooth { color: #7aafff; }
-      #bluetooth.disabled { color: rgba(200, 208, 224, 0.3); }
-      #bluetooth.off { color: rgba(200, 208, 224, 0.3); }
-      #bluetooth.connected { color: #33ccff; }
+      #bluetooth { color: @blue; }
+      #bluetooth.disabled { color: @text-dim; }
+      #bluetooth.off { color: @text-dim; }
+      #bluetooth.connected { color: @accent; }
 
-      #custom-fan { color: #e0c880; }
+      #custom-fan { color: @yellow; }
 
-      #temperature { color: #e0c880; }
-      #temperature.warning { color: #f0b070; }
-      #temperature.critical { color: #ff6478; }
+      #custom-theme.light { color: @yellow; }
+      #custom-theme.dark { color: @blue; }
 
-      #custom-power-profile { color: #8edba6; }
-      #custom-power-profile.performance { color: #ff6478; }
-      #custom-power-profile.power-saver { color: #7aafff; }
+      #temperature { color: @yellow; }
+      #temperature.warning { color: @orange; }
+      #temperature.critical { color: @red; }
 
-      #battery { color: #8edba6; }
-      #battery.warning { color: #f0b070; }
-      #battery.critical { color: #ff6478; }
-      #battery.charging { color: #8edba6; }
+      #custom-power-profile { color: @green; }
+      #custom-power-profile.performance { color: @red; }
+      #custom-power-profile.power-saver { color: @blue; }
+
+      #battery { color: @green; }
+      #battery.warning { color: @orange; }
+      #battery.critical { color: @red; }
+      #battery.charging { color: @green; }
 
       #tray {
         padding: 4px 8px;
