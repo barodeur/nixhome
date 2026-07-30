@@ -269,7 +269,12 @@
     settings = {
       splash = false;
       preload = [ "/home/paul/Pictures/wallpaper.jpg" ];
-      wallpaper = [ ", /home/paul/Pictures/wallpaper.jpg" ];
+      # hyprpaper 0.8 dropped the "monitor,path" one-liner; the old form parses
+      # without error but never binds, leaving the default background.
+      wallpaper = {
+        monitor = "";
+        path = "/home/paul/Pictures/wallpaper.jpg";
+      };
     };
   };
 
