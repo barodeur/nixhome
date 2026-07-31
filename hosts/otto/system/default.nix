@@ -18,6 +18,15 @@
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Hibernate resume started hard-resetting the machine on 2026-07-30 with no
+  # trace in the journal, pstore or BERT — the signature of a data fabric sync
+  # flood, which resets the SoC before anything can be logged. The firmware
+  # declines AER in _OSC ("platform does not support [AER]"), so PCIe errors
+  # leading up to it are invisible; this takes AER control natively anyway and
+  # populates /sys/bus/pci/devices/*/aer_dev_*. Purely diagnostic, no behaviour
+  # change. Drop it once the cause is pinned down.
+  boot.kernelParams = [ "pcie_ports=native" ];
+
   # Kept for reference: the mt7925e workaround, removed 2026-07-29 on the
   # assumption that kernel 7.1.5 carries the deadlock fixes that were expected
   # in 6.19+. That assumption is UNVERIFIED — the failure mode is a hang or a
