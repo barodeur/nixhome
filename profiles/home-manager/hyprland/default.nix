@@ -175,6 +175,9 @@ in
         # Clipboard history
         "$mod SHIFT, V, exec, cliphist list | wofi --dmenu --prompt 'Clipboard' | cliphist decode | wl-copy"
 
+        # Theme picker over the palettes in profiles/home-manager/theme
+        "$mod, T, exec, theme-mode menu"
+
         # Move to workspace
         "$mod SHIFT, 1, movetoworkspace, 1"
         "$mod SHIFT, 2, movetoworkspace, 2"
@@ -292,12 +295,16 @@ in
     enable = true;
     settings = {
       splash = false;
-      preload = [ "/home/paul/Pictures/wallpaper.jpg" ];
+      # The wallpaper is part of the theme now: this path is a symlink the
+      # switcher repoints, same as the palette files above. See
+      # profiles/home-manager/theme/backgrounds.nix for which image each theme
+      # wears and why they are all .jpg.
+      preload = [ "${stateDir}/background.jpg" ];
       # hyprpaper 0.8 dropped the "monitor,path" one-liner; the old form parses
       # without error but never binds, leaving the default background.
       wallpaper = {
         monitor = "";
-        path = "/home/paul/Pictures/wallpaper.jpg";
+        path = "${stateDir}/background.jpg";
       };
     };
   };

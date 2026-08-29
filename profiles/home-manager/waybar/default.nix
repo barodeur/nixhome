@@ -89,20 +89,22 @@ in
           '';
         };
 
-        # Light/dark switch. No interval: the only thing that changes the mode
-        # is theme-mode, and applying a mode reloads waybar, so the module is
+        # Theme switch. No interval: the only thing that changes the theme is
+        # theme-mode, and applying a theme reloads waybar, so the module is
         # re-read exactly when it needs to be.
         "custom/theme" = {
           return-type = "json";
           exec = pkgs.writeShellScript "theme-status" ''
-            m=$(theme-mode get)
-            case "$m" in
+            name=$(theme-mode get)
+            mode=$(theme-mode mode)
+            case "$mode" in
               dark) i="󰖔" ;;
               *) i="󰖨" ;;
             esac
-            printf '{"text":"%s","class":"%s","tooltip":"%s mode — click to switch"}\n' "$i" "$m" "$m"
+            printf '{"text":"%s","class":"%s","tooltip":"%s — click to switch mode, right-click to pick a theme"}\n' "$i" "$mode" "$name"
           '';
           on-click = "theme-mode toggle";
+          on-click-right = "theme-mode menu";
         };
 
         battery = {

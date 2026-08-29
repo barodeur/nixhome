@@ -1,6 +1,17 @@
 require 'options'
 
-vim.cmd('colorscheme gruvbox')
+-- Colours come from the theme profile on hosts that have one: it writes a
+-- generated nvim.lua (background, the 16 terminal colours, and the colorscheme
+-- its palette maps to) into the same state directory waybar and hyprland read.
+-- See profiles/home-manager/theme. Everywhere else gruvbox stays the default.
+local state = vim.env.XDG_STATE_HOME or (vim.env.HOME .. '/.local/state')
+local theme = state .. '/theme/nvim.lua'
+local uv = vim.uv or vim.loop
+if uv.fs_stat(theme) then
+  dofile(theme)
+else
+  vim.cmd('colorscheme gruvbox')
+end
 vim.keymap.set('n', '<Leader>b', ':NvimTreeToggle<CR>', { remap = true })
 vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>')
 vim.keymap.set('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>')

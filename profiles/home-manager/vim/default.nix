@@ -1,6 +1,14 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
-let nvimHome = "${config.xdg.configHome}/nvim";
+let
+  nvimHome = "${config.xdg.configHome}/nvim";
+
+  # The colorschemes the theme profile can switch to. Taken from the same
+  # mapping it generates nvim.lua against (profiles/home-manager/theme), so a
+  # theme can never name a colorscheme that is not installed. Harmless on the
+  # darwin hosts, which have no theme profile and stay on gruvbox.
+  colorschemes = map (name: pkgs.vimPlugins.${name})
+    (lib.unique (lib.mapAttrsToList (_: v: v.plugin) (import ../theme/neovim.nix)));
 in
 {
   programs = {
@@ -50,7 +58,6 @@ in
         friendly-snippets
         gitsigns-nvim
         goyo-vim
-        gruvbox-nvim
         lspkind-nvim
         lualine-nvim
         nvim-cmp
@@ -101,7 +108,7 @@ in
           grammars.tree-sitter-typescript
           grammars.tree-sitter-yaml
         ]))
-      ];
+      ] ++ colorschemes;
     };
   };
 

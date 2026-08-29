@@ -52,7 +52,6 @@
     jq
     dnsutils
     glow
-    btop
     bottom
     opentofu
     sops
@@ -227,9 +226,34 @@
 
   programs.ghostty = {
     enable = true;
-    # Ghostty follows the desktop colour scheme by default, which would drag the
-    # terminal into light mode along with everything else. Pinning the theme it
-    # already used in dark mode opts it out; it stays dark in both.
-    settings.theme = "Ghostty Default Style Dark";
+    # The terminal palette comes from the theme profile's generated
+    # ghostty.conf, so ghostty carries the same 16 ANSI colours as everything
+    # else instead of following the desktop colour scheme on its own. The "?"
+    # marks the include optional: home-manager validates this config during
+    # activation, which can run before the state symlink exists, and a missing
+    # required config-file is a hard error.
+    settings.config-file = "?${config.xdg.stateHome}/theme/ghostty.conf";
+  };
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      # Matched by stem against ~/.config/btop/themes/current.theme, which the
+      # theme profile points at the active palette. btop only considers themes
+      # it found in its own theme directories, so an absolute path here would
+      # be ignored and silently fall back to the built-in theme.
+      color_theme = "current";
+
+      # btop.conf is a store symlink now, so btop cannot write to it: with this
+      # left at btop's default of true it would try on every exit and fail. The
+      # cost is that changes made in btop's own options menu last only for that
+      # run — anything worth keeping belongs here instead. The hand-written
+      # config this replaced had drifted only two keys from btop's defaults,
+      # and one of those was just an older btop's default for shown_gpus.
+      save_config_on_exit = false;
+
+      # Sort the process list as it is sampled rather than on a lag.
+      proc_sorting = "cpu direct";
+    };
   };
 }

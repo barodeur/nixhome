@@ -179,6 +179,23 @@
         "type": "github"
       }
     },
+    "omarchy": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788016214,
+        "narHash": "sha256-BRKkMQMn9FVOjkOIlU/q6dzTBIzjZhP9zLO7hvicdJY=",
+        "owner": "basecamp",
+        "repo": "omarchy",
+        "rev": "56fbaf4689e3eb6867c0b7f375ae49964f183774",
+        "type": "github"
+      },
+      "original": {
+        "owner": "basecamp",
+        "ref": "quattro",
+        "repo": "omarchy",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "darwin": "darwin",
@@ -189,7 +206,8 @@
         "nix-flatpak": "nix-flatpak",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-stable": "nixpkgs-stable"
+        "nixpkgs-stable": "nixpkgs-stable",
+        "omarchy": "omarchy"
       }
     },
     "rust-analyzer-src": {

@@ -33,6 +33,16 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
 
+    # Omarchy, for its themes only. Read as data at eval time — each
+    # themes/<name>/colors.toml is 24 semantic colour keys and nothing else —
+    # so none of Omarchy is built, installed or run; see
+    # profiles/home-manager/theme. "quattro" is their default branch, and the
+    # theme layout changed with it, so the ref is explicit.
+    omarchy = {
+      url = "github:basecamp/omarchy/quattro";
+      flake = false;
+    };
+
     # Hardware quirks for otto (Framework 13 AMD AI 300). Modules only, no
     # nixpkgs of its own to follow.
     nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -49,6 +59,7 @@
     , fenix
     , nix-flatpak
     , nixos-hardware
+    , omarchy
     }@inputs: {
       overlay = final: prev: { my = self.packages.${final.system}; };
 
@@ -89,6 +100,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # The theme profile reads its palettes out of the omarchy input.
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.paul.imports = [
               nix-flatpak.homeManagerModules.nix-flatpak
               ./hosts/otto
