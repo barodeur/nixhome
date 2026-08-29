@@ -75,16 +75,24 @@ in
       monitor = ",preferred,auto,1.6";
 
       general = {
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2;
+        # Tighter than Omarchy, which ships the 5/10 this used to be. With
+        # rounding off there is no corner arc needing room to breathe, so the
+        # gap can close up without windows looking crowded.
+        gaps_in = 2;
+        gaps_out = 5;
+        # A hairline. At 2px the accent gradient reads as a frame around the
+        # window; at 1px it reads as an edge, which is what the rest of this
+        # session is now doing.
+        border_size = 1;
         "col.active_border" = "$activeBorder";
         "col.inactive_border" = "$inactiveBorder";
         layout = "dwindle";
       };
 
       decoration = {
-        rounding = 10;
+        # Square, like Omarchy. The border is the only thing framing a window,
+        # so it reads as a sharp edge rather than a card.
+        rounding = 0;
       };
 
       env = [
@@ -313,7 +321,7 @@ in
     enable = true;
     settings = {
       default-timeout = 5000;
-      border-radius = 10;
+      border-radius = 0;
       border-size = 2;
       # The three colour keys live in the palette instead. home-manager emits
       # global keys before sections, so the include lands where it needs to.
@@ -347,7 +355,6 @@ in
       window {
         background-color: @bg-popup;
         border: 1px solid @border-strong;
-        border-radius: 12px;
         color: @text;
       }
 
@@ -355,7 +362,6 @@ in
         margin: 8px;
         padding: 6px 10px;
         border: 1px solid @border-strong;
-        border-radius: 8px;
         background-color: @surface;
         color: @text-strong;
       }
@@ -370,7 +376,6 @@ in
 
       #entry {
         padding: 6px 10px;
-        border-radius: 8px;
       }
 
       #img {

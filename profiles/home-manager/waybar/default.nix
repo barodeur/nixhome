@@ -14,57 +14,38 @@ in
       mainBar = {
         layer = "top";
         position = "top";
-        height = 38;
-        margin-top = 6;
-        margin-left = 8;
-        margin-right = 8;
+        # Omarchy's bar is a strip flush against the screen edge, not a
+        # floating island: no margins, no rounding, no border, and 26px at a
+        # 12px font rather than 38. The gap between bar and windows is
+        # Hyprland's gaps_out alone.
+        height = 26;
         spacing = 0;
 
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
-        modules-right = [ "custom/theme" "pulseaudio" "backlight" "network" "bluetooth" "cpu" "memory" "temperature" "custom/fan" "custom/power-profile" "battery" "tray" ];
+        modules-right = [ "custom/theme" "backlight" "pulseaudio" "network" "bluetooth" "custom/power-profile" "battery" "tray" ];
 
+        # A filled square for the focused workspace, plain numbers for the
+        # rest. waybar resolves a workspace icon urgent -> active -> special ->
+        # by-name -> visible -> empty -> persistent -> default, and returns the
+        # workspace's own name when none of those matched. Mapping *only*
+        # "active" therefore leaves every other workspace falling through to
+        # its number, which is the whole effect — occupancy is carried by
+        # colour instead (the .empty class below), not by a second glyph.
         "hyprland/workspaces" = {
-          format = "{name}";
+          format = "{icon}";
+          format-icons.active = "󰝤";
           on-click = "activate";
           sort-by-number = true;
+          # 1-5 always present, so the row does not reflow as workspaces come
+          # and go. Without this, only workspaces holding a window exist.
+          persistent-workspaces."*" = 5;
         };
 
         clock = {
-          format = "󰥔 {:%H:%M}";
-          format-alt = "󰃭 {:%A, %B %d}";
+          format = "{:%A %H:%M}";
+          format-alt = "{:%A, %B %d}";
           tooltip-format = "<tt>{calendar}</tt>";
-        };
-
-        cpu = {
-          format = "󰻠 {usage:02}%";
-          interval = 2;
-        };
-
-        memory = {
-          format = "󰍛 {percentage:02}%";
-          tooltip-format = "{used:0.1f}G / {total:0.1f}G used";
-          interval = 2;
-        };
-
-        # Fan RPM from the EC via framework-laptop-kmod's cros_ec hwmon; looked
-        # up by name because hwmon indices shift between boots.
-        "custom/fan" = {
-          exec = "for h in /sys/class/hwmon/hwmon*; do [ \"$(cat $h/name)\" = cros_ec ] && cat $h/fan1_input && break; done";
-          interval = 5;
-          format = "󰈐 {}rpm";
-          tooltip = false;
-        };
-
-        # CPU die temperature (k10temp Tctl), addressed by PCI device path
-        # because hwmon indices shift between boots.
-        temperature = {
-          hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
-          input-filename = "temp1_input";
-          interval = 5;
-          warning-threshold = 80;
-          critical-threshold = 95;
-          format = "󰔏 {temperatureC}°C";
         };
 
         # A custom module instead of the built-in power-profiles-daemon one:
@@ -107,15 +88,20 @@ in
           on-click-right = "theme-mode menu";
         };
 
+        # Every readout below is icon-only; the number it used to print lives
+        # in the tooltip. Battery is the one that loses real information, so
+        # its five icons are the coarse gauge and the exact figure is a hover
+        # away.
         battery = {
           states = {
             warning = 30;
             critical = 15;
           };
-          format = "{icon} {capacity:02}%";
-          format-charging = "󰂄 {capacity:02}%";
-          format-plugged = "󰚥 {capacity:02}%";
+          format = "{icon}";
+          format-charging = "󰂄";
+          format-plugged = "󰚥";
           format-icons = [ "󰁺" "󰁼" "󰁾" "󰂀" "󰁹" ];
+          tooltip-format = "{capacity}% — {time}";
           # The sudo rule in hosts/otto/system allows exactly these two
           # framework_tool invocations without a password.
           on-click = pkgs.writeShellScript "charge-limit-menu" ''
@@ -132,8 +118,9 @@ in
         };
 
         backlight = {
-          format = "{icon} {percent:02}%";
+          format = "{icon}";
           format-icons = [ "󰃞" "󰃟" "󰃠" ];
+          tooltip-format = "Brightness {percent}%";
           scroll-step = 5;
           on-scroll-up = "brightnessctl set +5%";
           on-scroll-down = "brightnessctl set 5%-";
@@ -149,24 +136,27 @@ in
         };
 
         network = {
-          format-wifi = "󰤨 {signalStrength:02}%";
-          format-ethernet = "󰈀 {ipaddr}/{cidr}";
-          format-disconnected = "󰤭 Off";
-          tooltip-format-wifi = "{essid} ({signalStrength}%)";
+          format-wifi = "{icon}";
+          format-icons = [ "󰤟" "󰤢" "󰤥" "󰤨" ];
+          format-ethernet = "󰈀";
+          format-disconnected = "󰤭";
+          tooltip-format-wifi = "{essid} — {signalStrength}%";
+          tooltip-format-ethernet = "{ipaddr}/{cidr}";
           on-click = "ghostty -e nmtui";
         };
 
         pulseaudio = {
-          format = "{icon} {volume:02}%";
-          format-muted = "󰝟 Muted";
+          format = "{icon}";
+          format-muted = "󰝟";
           format-icons = {
             default = [ "󰕿" "󰖀" "󰕾" ];
           };
+          tooltip-format = "{desc} — {volume}%";
           on-click = "pavucontrol";
         };
 
         tray = {
-          spacing = 10;
+          spacing = 8;
         };
       };
     };
@@ -176,25 +166,29 @@ in
          relative import would resolve next to it, in /nix/store. */
       @import url("file://${stateDir}/palette.css");
 
+      /* Omarchy's bar is icons on a flat ground. The pill background, rounded
+         corner and border every module used to carry are cleared here once
+         rather than unset one at a time below. */
       * {
         font-family: "JetBrainsMono Nerd Font", monospace;
-        font-size: 13px;
+        font-size: 12px;
         min-height: 0;
         padding: 0;
         margin: 0;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        text-shadow: none;
       }
 
       window#waybar {
-        background: @bg;
-        border-radius: 12px;
-        border: 1px solid @border;
+        background: @bg-elevated;
         color: @text;
       }
 
       tooltip {
         background: @bg-elevated;
         border: 1px solid @border-strong;
-        border-radius: 8px;
       }
 
       tooltip label {
@@ -203,117 +197,83 @@ in
 
       /* ── Workspaces ── */
       #workspaces {
-        margin: 3px 6px;
+        margin-left: 4px;
       }
 
       #workspaces button {
-        padding: 2px 10px;
-        margin: 3px 2px;
-        border-radius: 8px;
-        color: @text-muted;
+        padding: 0 7px;
+        color: @text;
         background: transparent;
-        border: 1px solid transparent;
-        transition: all 0.25s ease;
-        min-width: 20px;
       }
 
-      #workspaces button:hover {
-        background: @accent-hover;
-        color: @accent;
+      /* Occupancy, since every workspace but the focused one renders as a bare
+         number: dim means nothing is open there. */
+      #workspaces button.empty {
+        color: @text-dim;
       }
 
       #workspaces button.active {
-        background: linear-gradient(135deg, @sel-from, @sel-to);
-        color: @sel-text;
-        border: 1px solid @sel-border;
+        color: @text-strong;
       }
 
       #workspaces button.urgent {
-        background: @urgent-bg;
         color: @red;
+      }
+
+      #workspaces button:hover {
+        color: @accent;
+        background: transparent;
       }
 
       /* ── Clock ── */
       #clock {
-        font-weight: 600;
-        font-size: 14px;
+        padding: 0 8px;
         color: @text-strong;
-        padding: 4px 14px;
-        margin: 3px 2px;
       }
 
-      /* ── Common module styling ── */
-      #cpu,
-      #memory,
-      #battery,
-      #network,
-      #bluetooth,
+      /* ── Status icons ──
+         One colour for all of them. Colour is spent on state instead: an
+         unreachable or muted device dims, a dying battery reddens. */
+      #custom-theme,
       #backlight,
       #pulseaudio,
+      #network,
+      #bluetooth,
       #custom-power-profile,
-      #custom-fan,
-      #custom-theme,
-      #temperature,
+      #battery,
       #tray {
-        padding: 4px 12px;
-        margin: 3px 2px;
-        border-radius: 8px;
-        background: @surface;
-        transition: all 0.25s ease;
+        padding: 0 7px;
+        color: @text;
+        background: transparent;
       }
 
-      #cpu:hover,
-      #memory:hover,
-      #battery:hover,
-      #network:hover,
-      #bluetooth:hover,
+      #custom-theme:hover,
       #backlight:hover,
       #pulseaudio:hover,
+      #network:hover,
+      #bluetooth:hover,
       #custom-power-profile:hover,
-      #custom-fan:hover,
-      #custom-theme:hover,
-      #temperature:hover {
-        background: @surface-hover;
+      #battery:hover {
+        color: @accent;
       }
 
-      /* ── Module colors ── */
-      #cpu { color: @blue; }
-      #memory { color: @purple; }
-      #pulseaudio { color: @green; }
-      #backlight { color: @yellow; }
-
-      #pulseaudio.muted {
+      #pulseaudio.muted,
+      #network.disconnected,
+      #bluetooth.off,
+      #bluetooth.disabled {
         color: @text-dim;
       }
 
-      #network { color: @accent; }
-      #network.disconnected { color: @text-dim; }
+      #battery.warning {
+        color: @orange;
+      }
 
-      #bluetooth { color: @blue; }
-      #bluetooth.disabled { color: @text-dim; }
-      #bluetooth.off { color: @text-dim; }
-      #bluetooth.connected { color: @accent; }
-
-      #custom-fan { color: @yellow; }
-
-      #custom-theme.light { color: @yellow; }
-      #custom-theme.dark { color: @blue; }
-
-      #temperature { color: @yellow; }
-      #temperature.warning { color: @orange; }
-      #temperature.critical { color: @red; }
-
-      #custom-power-profile { color: @green; }
-      #custom-power-profile.performance { color: @red; }
-      #custom-power-profile.power-saver { color: @blue; }
-
-      #battery { color: @green; }
-      #battery.warning { color: @orange; }
-      #battery.critical { color: @red; }
-      #battery.charging { color: @green; }
+      #battery.critical {
+        color: @red;
+      }
 
       #tray {
-        padding: 4px 8px;
+        padding: 0 8px 0 6px;
       }
 
       #tray > .passive {

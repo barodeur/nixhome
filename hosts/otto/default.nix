@@ -254,6 +254,10 @@
 
       # Sort the process list as it is sampled rather than on a lag.
       proc_sorting = "cpu direct";
+
+      # Square, to match the rest of the session. btop defaults this to true,
+      # so leaving it out left btop the one thing still drawing rounded boxes.
+      rounded_corners = false;
     };
   };
 }
