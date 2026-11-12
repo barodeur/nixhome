@@ -4,10 +4,9 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # otto's system runs the stable release, pinned to the exact revision the
-    # channel-based config was on at migration time so the switch is a no-op.
-    # Bump deliberately with `nix flake update nixpkgs-stable`.
-    nixpkgs-stable.url = "github:nixos/nixpkgs/2f5a153c270b70cb0f8c11f46d96d6d3bc39f4e3";
+    # otto's system runs the stable release. flake.lock pins the revision;
+    # bump deliberately with `nix flake update nixpkgs-stable`.
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
     home-manager = {
       url = "github:nix-community/home-manager";
