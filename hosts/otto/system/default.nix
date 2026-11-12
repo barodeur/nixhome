@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
@@ -227,6 +227,22 @@
     enable = true;
     withUWSM = true;
   };
+
+  # switch-to-configuration also restarts changed user units in the running
+  # session. These uwsm units are the session itself: restarting the bindpid
+  # or compositor unit fires wayland-session-shutdown.target and logs out,
+  # killing the rebuild halfway. Let them pick up changes at next login.
+  # Raw drop-ins, not systemd.user.services: those would also pin a minimal
+  # PATH on the compositor unit.
+  systemd.user.units = lib.genAttrs
+    [ "wayland-session-bindpid@.service" "wayland-wm@.service" "wayland-wm-env@.service" "wayland-session-waitenv.service" ]
+    (_: {
+      overrideStrategy = "asDropin";
+      text = ''
+        [Service]
+        X-RestartIfChanged=false
+      '';
+    });
 
   programs.zsh.enable = true;
 
