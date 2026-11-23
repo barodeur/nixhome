@@ -23,6 +23,8 @@ in
         InitialKeyRepeat = 10;
         # Held keys repeat instead of opening the accent picker.
         ApplePressAndHoldEnabled = false;
+        # F1, F2… act as function keys; hold Fn for brightness, volume, media.
+        "com.apple.keyboard.fnState" = true;
         AppleShowAllExtensions = true;
       };
 
