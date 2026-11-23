@@ -80,6 +80,12 @@
         modules = [ home-manager.darwinModules.home-manager ./hosts/piama ];
       };
 
+      darwinConfigurations.abe = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        inherit inputs;
+        modules = [ home-manager.darwinModules.home-manager ./hosts/abe ];
+      };
+
       darwinConfigurations.cmpc = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         inherit inputs;

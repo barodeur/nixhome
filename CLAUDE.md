@@ -8,7 +8,7 @@ This is a Nix flake-based multi-machine dotfiles/system configuration repo manag
 
 ## Commands
 
-**macOS (nix-darwin) hosts** (jamie, lois, piama):
+**macOS (nix-darwin) hosts** (abe, jamie, lois, piama):
 ```
 darwin-rebuild switch --flake .
 ```
@@ -36,7 +36,7 @@ The flake defines three types of configurations:
 
 ### Directory structure
 
-- `hosts/<name>/` — Per-machine entry point. Each imports the profiles and user config it needs. Darwin hosts (jamie, lois, piama) import `profiles/base`, `profiles/common`, `profiles/home-manager`, and `users/paul/darwin.nix`. The Linux host (otto) directly imports individual home-manager profile modules.
+- `hosts/<name>/` — Per-machine entry point. Each imports the profiles and user config it needs. Darwin hosts (abe, jamie, lois, piama) import `profiles/base`, `profiles/common`, `profiles/home-manager`, and `users/paul/darwin.nix`. The Linux host (otto) directly imports individual home-manager profile modules.
 - `profiles/base/` — Darwin-only system-level config (nix-daemon, fenix overlay).
 - `profiles/common/` — Darwin-only shared system config (system packages, nixpkgs settings, gnupg/zsh system programs). `packages.nix` defines the shared package list including Rust toolchain via fenix.
 - `profiles/home-manager/` — Home-manager module fragments, each in its own subdirectory (git, zsh, vim, gpg, tmux, direnv, environment, hyprland, waybar). Some have platform-specific variants (e.g., `gpg/linux.nix`, `zsh/linux.nix`).
