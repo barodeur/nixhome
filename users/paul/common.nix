@@ -14,6 +14,7 @@
       ../../profiles/home-manager/environment
       ../../profiles/home-manager/git
       ../../profiles/home-manager/git/paul.nix
+      ../../profiles/home-manager/gh
       ../../profiles/home-manager/gpg
       ../../profiles/home-manager/vim
       ../../profiles/home-manager/zsh
