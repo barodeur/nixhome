@@ -25,11 +25,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
 
     # Omarchy, for its themes only. Read as data at eval time — each
@@ -55,7 +50,6 @@
     , nixpkgs-stable
     , darwin
     , flake-utils
-    , fenix
     , nix-flatpak
     , nixos-hardware
     , omarchy

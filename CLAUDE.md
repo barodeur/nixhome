@@ -39,8 +39,8 @@ The flake defines three types of configurations:
 ### Directory structure
 
 - `hosts/<name>/` — Per-machine entry point. Each imports the profiles and user config it needs. Darwin hosts (abe, jamie, lois, piama) import `profiles/base`, `profiles/common`, `profiles/home-manager`, and `users/paul/darwin.nix`. The Linux host (otto) directly imports individual home-manager profile modules.
-- `profiles/base/` — Darwin-only system-level config (nix-daemon, fenix overlay).
-- `profiles/common/` — Darwin-only shared system config (system packages, nixpkgs settings, gnupg/zsh system programs). `packages.nix` defines the shared package list including Rust toolchain via fenix.
+- `profiles/base/` — Darwin-only system-level config (Nix is managed by the Determinate installer, so nix-darwin leaves it alone).
+- `profiles/common/` — Darwin-only shared system config (system packages, nixpkgs settings, gnupg/zsh system programs). `packages.nix` defines the shared package list.
 - `profiles/home-manager/` — Home-manager module fragments, each in its own subdirectory (git, zsh, vim, gpg, tmux, direnv, environment, hyprland, waybar). Some have platform-specific variants (e.g., `gpg/linux.nix`, `zsh/linux.nix`).
 - `users/paul/` — User definition. `common.nix` sets up the user and imports home-manager profiles. `darwin.nix` extends it with macOS-specific settings.
 
@@ -48,7 +48,6 @@ The flake defines three types of configurations:
 
 - Darwin hosts compose via: host → profiles/{base,common,home-manager} → users/paul/darwin.nix → users/paul/common.nix (which imports home-manager profile modules).
 - The Linux host (otto) wires `hosts/otto` (the home config, which directly imports the profile modules it needs, bypassing the darwin-specific base/common/home-manager profiles) into its system config via the home-manager NixOS module in flake.nix. `hosts/otto/system/` holds the system half.
-- The fenix overlay provides the Rust toolchain on darwin via `profiles/base`; otto does not use it.
 
 ## Git Commits
 

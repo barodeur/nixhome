@@ -26,7 +26,6 @@ in
         actionlint
         bat
         fd
-        # fenix.rust-analyzer
         eslint_d
         prettier
         typescript
