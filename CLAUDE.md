@@ -12,6 +12,8 @@ This is a Nix flake-based multi-machine dotfiles/system configuration repo manag
 ```
 darwin-rebuild switch --flake .
 ```
+On abe, `paul` is not an administrator (`admin` is), so use `abe-rebuild`
+instead: it builds as paul, then activates the result as admin via `su`.
 
 **Linux host (otto)** — home-manager runs as a NixOS module, so one rebuild
 applies system (`hosts/otto/system/`) and home (`hosts/otto/default.nix`)
