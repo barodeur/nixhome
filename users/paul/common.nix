@@ -10,6 +10,7 @@
 
   home-manager.users.paul = { ... }: {
     imports = [
+      ../../profiles/home-manager/atuin
       ../../profiles/home-manager/direnv
       ../../profiles/home-manager/environment
       ../../profiles/home-manager/git
