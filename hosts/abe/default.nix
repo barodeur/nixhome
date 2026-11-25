@@ -1,6 +1,43 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+  pcKeyboard = { vendorId = 1241; productId = 41165; };
+
+  capsLock = 30064771129;
+  escape = 30064771113;
+  leftAlt = 30064771298;
+  leftCommand = 30064771299;
+  rightAlt = 30064771302;
+  rightCommand = 30064771303;
+
+  remap = src: dst: {
+    HIDKeyboardModifierMappingSrc = src;
+    HIDKeyboardModifierMappingDst = dst;
+  };
+
+  pcKeyboardMapping = [
+    (remap capsLock escape)
+    (remap leftAlt leftCommand)
+    (remap leftCommand leftAlt)
+    (remap rightAlt rightCommand)
+    (remap rightCommand rightAlt)
+  ];
+
+  mappingDict = m: ''
+    <dict><key>HIDKeyboardModifierMappingSrc</key><integer>${toString m.HIDKeyboardModifierMappingSrc}</integer><key>HIDKeyboardModifierMappingDst</key><integer>${toString m.HIDKeyboardModifierMappingDst}</integer></dict>'';
+in
 {
+  home-manager.users.paul = { lib, ... }: {
+    home.activation.pcKeyboardModifiers = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run /usr/bin/defaults -currentHost write -g \
+        com.apple.keyboard.modifiermapping.${toString pcKeyboard.vendorId}-${toString pcKeyboard.productId}-0 \
+        -array ${lib.concatMapStringsSep " " (m: "'${mappingDict m}'") pcKeyboardMapping}
+      run /usr/bin/hidutil property \
+        --matching '{"VendorID":${toString pcKeyboard.vendorId},"ProductID":${toString pcKeyboard.productId}}' \
+        --set '{"UserKeyMapping":${builtins.toJSON pcKeyboardMapping}}' > /dev/null
+    '';
+  };
+
   imports =
     [
       ../../profiles/base
