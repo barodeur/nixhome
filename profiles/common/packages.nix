@@ -15,6 +15,7 @@ with pkgs; [
   # pinentry_mac
   pkg-config
   ripgrep
+  rustup
   tmux
   utm
   yt-dlp
