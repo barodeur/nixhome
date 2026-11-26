@@ -17,6 +17,7 @@
       ../../profiles/home-manager/git
       ../../profiles/home-manager/git/paul.nix
       ../../profiles/home-manager/gh
+      ../../profiles/home-manager/gwscli
       ../../profiles/home-manager/gpg
       ../../profiles/home-manager/vim
       ../../profiles/home-manager/zsh
