@@ -28,6 +28,8 @@ let
 in
 {
   home-manager.users.paul = { lib, ... }: {
+    imports = [ ../../profiles/home-manager/opencode ];
+
     home.activation.pcKeyboardModifiers = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       run /usr/bin/defaults -currentHost write -g \
         com.apple.keyboard.modifiermapping.${toString pcKeyboard.vendorId}-${toString pcKeyboard.productId}-0 \
